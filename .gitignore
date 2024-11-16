@@ -1,0 +1,7 @@
+# Unity specific
+/Library/
+/Temp/
+/Obj/
+/Build/
+/Builds/
+/UserSettings/
