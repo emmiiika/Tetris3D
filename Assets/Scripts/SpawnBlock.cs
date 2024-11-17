@@ -4,9 +4,9 @@ using UnityEngine;
 public class SpawnBlock : MonoBehaviour
 {
     public List<GameObject> blocks;
-    public Camera camera;
+    public new Camera camera;
 
-    private bool _chosen;
+    // private bool _chosen;
     private GameObject _chosenBlock;
     
     private float _screenWidth;
@@ -35,11 +35,11 @@ public class SpawnBlock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _chosen = false;
+        // _chosen = false;
         
         _chosenBlock = chooseBlock();
         Debug.Log(_chosenBlock.name);
-        _chosen = true;
+        // _chosen = true;
         
         GameObject block = Instantiate(_chosenBlock, transform);
         block.transform.rotation = Quaternion.Euler(0,0,0);
