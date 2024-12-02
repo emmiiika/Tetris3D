@@ -32,11 +32,13 @@ public class AutoIncrement
 [Inspectable][Serializable]
 public class Cube {
     public int id;
-    public Location LocalLocation;
-    public Location GlobalLocation;
+    public Location LocalLocation; // location in the grid, (0, 0, 0), (0, 0, 1), (0, 1, 0)...
+    public Location GlobalLocation; // actual location in world space
     public Material material;
     public int cubeSize;
     public GameObject cubeObject;
+    
+    private Renderer _renderer;
 
     public Cube(Location localLocation, Location globalLocation, Material material, AutoIncrement idCounter, int cubeSize=1){
         this.LocalLocation = localLocation;
@@ -55,5 +57,16 @@ public class Cube {
     public void Print(){
         Debug.Log("Cube (" + this.id + ")" + "\n\tlocalLocation: " + this.LocalLocation.toVector3() + "\n\tglobalLocation: " + this.GlobalLocation.toVector3() + "\n\tmaterial: " + this.material.name + "\n\tlocalLocation: " + this.LocalLocation.toVector3());
 
+    }
+
+    public void SetMaterial(Material material){
+        this.material = material;
+        
+        foreach (Transform child in cubeObject.transform){
+            if (child.name == "Cube"){
+                child.GetComponent<Renderer>().material = material;
+
+            }
+        }
     }
 }

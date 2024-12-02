@@ -7,7 +7,7 @@ public class GenerateBlock : MonoBehaviour
 {
     public List<GameObject> blocks;
 
-    private GameObject _chosenBlock = null;
+    private GameObject _chosenBlock;
     
     private float _screenWidth;
     private float _screenHeight;
@@ -17,17 +17,18 @@ public class GenerateBlock : MonoBehaviour
 
     public GameObject ChooseBlock(){
         int index = Random.Range(0,blocks.Count);
+        // Debug.Log(index);
         return blocks[index];
     }
 
 
     public GameObject GetBlock(){
-        Debug.Log("show");
+        // Debug.Log("show");
         if (_chosenBlock == null){
             _chosenBlock = ChooseBlock();
         }
 
-        Debug.Log(_chosenBlock.name);
+        // Debug.Log(_chosenBlock.name);
         blockName.text = _chosenBlock.name;
 
         return _chosenBlock;
@@ -35,12 +36,14 @@ public class GenerateBlock : MonoBehaviour
     
     void Start()
     {
+        
+        // blocks = new List<GameObject>();
         GetBlock();
         Hide();
     }
 
     public void Hide(){
-        Debug.Log("hide");
+        // Debug.Log("hide");
         blockName.text = " ";
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using static Cube;
-using static GenerateBlock;
 
 public class CreateEnvironment : MonoBehaviour
 {
@@ -11,15 +10,15 @@ public class CreateEnvironment : MonoBehaviour
     public Material transparentMaterial;
     
     private float _cubeSize; // size of one cube
-    private float _roomSpace; // how much space is between the wall and cubeSpace
     
     private List<Cube> _cubes;
+    private Cube[,,] _grid;
 
-    private Transform gridChild;
-    private Transform parent;
+    private Transform _gridChild;
 
     private bool _isShown = false;
     private GenerateBlock _gb;
+    private BlockPlacement _bp;
 
 
     
@@ -28,44 +27,55 @@ public class CreateEnvironment : MonoBehaviour
         for (float x = 0; x < gridSize * _cubeSize; x += _cubeSize){
             for (float y = 0; y < gridSize * _cubeSize; y += _cubeSize){
                 for (float z = 0; z < gridSize * _cubeSize; z += _cubeSize){
-                    Location localLocation = new Location(x, y, z);
+                    // Debug.Log(gridSize * _cubeSize);
+                    // Debug.Log((int)(gridSize * _cubeSize / x) + ", " + (int)(gridSize * _cubeSize / y) + ", " + (int)(gridSize * _cubeSize / z));
+                    int i = (int)(x / _cubeSize);
+                    int j = (int)(y / _cubeSize);
+                    int k = (int)(z / _cubeSize);
+                    
+                    Location localLocation = new Location((int)(2 * x * 10), (int)(2 * y * 10), (int)(2 * z * 10));
                     Location globalLocation = new Location(x + cubeSize / 2.0f - gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - gridSize * cubeSize / 2.0f);
                     
                     Cube cube = new Cube(localLocation, globalLocation, transparentMaterial, autoIncrement);
-                    cube.GenerateCube(gridChild, cubePrefab);
-                    
-                    cube.Print();
+                    cube.GenerateCube(_gridChild, cubePrefab);
                     
                     _cubes.Add(cube);
+                    _grid[i, j, k] = cube;
                 }
             }
         }
     }
 
     public void Start(){
+        _grid = new Cube[gridSize, gridSize, gridSize];
+        
     }
     
     public void ShowEnvironment(){
         if (!_isShown){
-            Debug.Log("Found it");
+            // Debug.Log("Found it");
             _isShown = true;
             _cubes = new List<Cube>();
-            gridChild = transform.GetChild(0);
-            parent = transform.parent;
+            _gridChild = transform.GetChild(0);
+            // parent = transform.parent;
 
             _cubeSize = cubePrefab.transform.localScale.x;
+            // Debug.Log(_cubeSize);
             AutoIncrement autoIncrement = new AutoIncrement();
             GenerateGrid(_cubeSize, autoIncrement);
 
             _gb = gameObject.GetComponent<GenerateBlock>();
-            _gb.GetBlock();
+            GameObject block = _gb.GetBlock();
+            
+            _bp = gameObject.GetComponent<BlockPlacement>();
+            _bp.PlaceBlock(_grid, block, new Location(0, 0, 0));
             
         }
     }
 
     public void HideEnvironment(){
         if (_isShown){
-            Debug.Log("Lost it");
+            // Debug.Log("Lost it");
             _isShown = false;
             foreach (Cube cube in _cubes){
                 Destroy(cube.cubeObject);
