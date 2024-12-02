@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static Cube;
+using static GenerateBlock;
 
 public class CreateEnvironment : MonoBehaviour
 {
@@ -14,11 +15,12 @@ public class CreateEnvironment : MonoBehaviour
     
     private List<Cube> _cubes;
 
-    // private Transform roomChild;
     private Transform gridChild;
     private Transform parent;
 
     private bool _isShown = false;
+    private GenerateBlock _gb;
+
 
     
     void GenerateGrid(float cubeSize, AutoIncrement autoIncrement){
@@ -39,6 +41,9 @@ public class CreateEnvironment : MonoBehaviour
             }
         }
     }
+
+    public void Start(){
+    }
     
     public void ShowEnvironment(){
         if (!_isShown){
@@ -51,6 +56,10 @@ public class CreateEnvironment : MonoBehaviour
             _cubeSize = cubePrefab.transform.localScale.x;
             AutoIncrement autoIncrement = new AutoIncrement();
             GenerateGrid(_cubeSize, autoIncrement);
+
+            _gb = gameObject.GetComponent<GenerateBlock>();
+            _gb.GetBlock();
+            
         }
     }
 
@@ -62,15 +71,12 @@ public class CreateEnvironment : MonoBehaviour
                 Destroy(cube.cubeObject);
             }
             _cubes.Clear();
+            
+            _gb = gameObject.GetComponent<GenerateBlock>();
+            _gb.Hide();
         }
     }
-    
-    // Start is called before the first frame update
-    void Start(){
-        // ShowEnvironment();
-    }
-
-    // Update is called once per frame
+ 
     void Update()
     {
         

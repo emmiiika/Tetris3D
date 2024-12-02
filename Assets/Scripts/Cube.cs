@@ -54,5 +54,6 @@ public class Cube {
 
     public void Print(){
         Debug.Log("Cube (" + this.id + ")" + "\n\tlocalLocation: " + this.LocalLocation.toVector3() + "\n\tglobalLocation: " + this.GlobalLocation.toVector3() + "\n\tmaterial: " + this.material.name + "\n\tlocalLocation: " + this.LocalLocation.toVector3());
+
     }
 }
