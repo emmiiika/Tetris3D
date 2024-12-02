@@ -532,9 +532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 1851350512781686953, guid: fcb17cc364747df71bfff78189c26221,
     type: 3}
-  wallPrefab: {fileID: 7384749077358185241, guid: f46ee0a5a32890d0391fa23aaeecbebb,
-    type: 3}
   gridSize: 3
+  transparentMaterial: {fileID: 2100000, guid: 4ca75abf1ba327feb9badecf1a270cca, type: 2}
 --- !u!1 &1370320972
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,8 +5,6 @@ using static Cube;
 public class CreateEnvironment : MonoBehaviour
 {
     public GameObject cubePrefab;
-    public GameObject wallPrefab;
-    // public Camera mainCamera;
     
     public int gridSize = 5; // size of cubeSpace
     public Material transparentMaterial;
@@ -15,9 +13,6 @@ public class CreateEnvironment : MonoBehaviour
     private float _roomSpace; // how much space is between the wall and cubeSpace
     
     private List<Cube> _cubes;
-    // private List<GameObject> _walls;
-    // private List<Vector3> _wallOffsets;
-    // private List<Vector3> _wallRotations;
 
     // private Transform roomChild;
     private Transform gridChild;
