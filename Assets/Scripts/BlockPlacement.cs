@@ -18,7 +18,7 @@ public class BlockPlacement : MonoBehaviour{
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
 
-        // if (CanPlaceBlock(grid, block, localLocation)){
+        if (CanPlaceBlock(grid, block, localLocation)){
             Renderer renderer;
             foreach (Transform child in block.transform){
                 // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
@@ -30,14 +30,16 @@ public class BlockPlacement : MonoBehaviour{
                 float k = child.localPosition.z;
 
                 grid[(int)(x + i), (int)(y + j), (int)(z + k)].SetMaterial(blockMaterial);
+                grid[(int)(x + i), (int)(y + j), (int)(z + k)].Print();
             }
+            
 
-        //     return true;
-        // }
+            return true;
+        }
         
         // TODO: save the actual tetromino into the grid?
 
-        return true;
+        return false;
     }
     
     /// <summary>
@@ -60,11 +62,12 @@ public class BlockPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
 
+            Debug.Log("Block " + block.name + " is inside the cube: " + !(((int)(x + i) < 0 || (int)(x + i) >= gridSize) || ((int)(y + j) < 0 || (int)(y + j) >= gridSize) || ((int)(z + k) < 0 || (int)(z + k) >= gridSize)));
+
             if (((int)(x + i) < 0 || (int)(x + i) >= gridSize) ||
                 ((int)(y + j) < 0 || (int)(y + j) >= gridSize) ||
                 ((int)(z + k) < 0 || (int)(z + k) >= gridSize)){
                 isInside = false;
-                Debug.Log("Block " + block.name + " is inside the cube: " + isInside);
                 break;
             }
         }
@@ -95,9 +98,9 @@ public class BlockPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
 
+            Debug.Log("Block " + block.name + " is covering another block: " + grid[(int)(x + i), (int)(y + j), (int)(z + k)].IsOccupied());
             if (grid[(int)(x + i), (int)(y + j), (int)(z + k)].IsOccupied()){
                 isCovering = true;
-                Debug.Log("Block " + block.name + " is covering another block: " + isCovering);
                 break;
             }
         }
@@ -118,9 +121,13 @@ public class BlockPlacement : MonoBehaviour{
         if (isInside){
             // no part of the tetromino is covering other tetromino
             bool isCoveringOther = IsCoveringOtherBlocks(grid, block, localLocation);
-            return isInside && isCoveringOther;
+            return !isCoveringOther;
         }
         return false;
+    }
+
+    public void changeBlockColorByPlacement(){
+        
     }
 
 }

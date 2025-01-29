@@ -44,7 +44,7 @@ public class CreateEnvironment : MonoBehaviour
                     Location globalLocation = new Location(x + cubeSize / 2.0f - gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - gridSize * cubeSize / 2.0f);
                     
                     // create and draw the cube
-                    Cube cube = new Cube(localLocation, globalLocation, transparentMaterial, autoIncrement);
+                    Cube cube = new Cube(localLocation, globalLocation, transparentMaterial, transparentMaterial, autoIncrement);
                     cube.GenerateCube(_gridChild, cubePrefab);
                     
                     // save the cube
