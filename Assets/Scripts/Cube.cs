@@ -1,8 +1,6 @@
 using System;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Class <c>Cube</c> models a cube.
@@ -14,7 +12,6 @@ public class Cube {
     public Location GlobalLocation; // actual location in world space
     public Material material;
     public Material transparentMaterial;
-    public int cubeSize;
     public GameObject cubeObject;
 
     /// <summary>
@@ -25,13 +22,11 @@ public class Cube {
     /// <param name="material">material of the cube.</param>
     /// <param name="transparentMaterial">material of the cube if it is empty.</param>
     /// <param name="idCounter">Autoincrement object that adds id to each cube.</param>
-    /// <param name="cubeSize">size of one side of cube.</param>
-    public Cube(Location localLocation, Location globalLocation, Material material, Material transparentMaterial, AutoIncrement idCounter, int cubeSize=1){
+    public Cube(Location localLocation, Location globalLocation, Material material, Material transparentMaterial, AutoIncrement idCounter){
         this.LocalLocation = localLocation;
         this.GlobalLocation = globalLocation;
         this.material = material;
         this.transparentMaterial = transparentMaterial;
-        this.cubeSize = cubeSize;
         
         this.id = idCounter.GenerateId();
     }

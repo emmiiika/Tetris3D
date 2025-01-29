@@ -1,8 +1,4 @@
-﻿using System;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 /// <summary>
 /// Class <c>Location</c> saves coordinates <c>x, y, z</c> (floats).

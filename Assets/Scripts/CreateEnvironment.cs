@@ -6,33 +6,49 @@ using UnityEngine;
 /// </summary>
 public class CreateEnvironment : MonoBehaviour
 {
-    public GameObject cubePrefab;
-    
-    public int gridSize = 5; // size of cubeSpace
-    public Material transparentMaterial;
-    public Material blueMaterial;
-    
+    private GameObject _cubePrefab;
+    private int _gridSize; // size of cube-grid
+    private Material _transparentMaterial;
     private float _cubeSize; // size of one cube
     
     private List<Cube> _cubes; // a list of all cubes
     private Cube[,,] _grid; // 3D array of Cubes in cube-grid
-
-    // private Transform _gridChild; // wrapper for the cube-grid 
 
     private bool _isShown = false;
     private GenerateTetromino _gb;
     private TetrominoPlacement _bp;
 
     /// <summary>
+    /// Method <c>Init</c> sets the needed private parameters.
+    /// </summary>
+    /// <param name="cubePrefab">prefab of a cube.</param>
+    /// <param name="transparentMaterial">transparent material.</param>
+    /// <param name="gridSize">size of the cube-grid (preset to 5).</param>
+    /// <param name="cubeSize">size of one side of a cube (preset to 0).</param>
+    public void Init(GameObject cubePrefab, Material transparentMaterial, int gridSize = 5, float cubeSize = 0){
+        this._cubePrefab = cubePrefab;
+        this._gridSize = gridSize;
+        this._transparentMaterial = transparentMaterial;
+
+        if (cubeSize == 0){
+            this._cubeSize = _cubePrefab.transform.localScale.x;
+        }
+        else{
+            this._cubeSize = cubeSize;
+        }
+}
+    
+    
+    /// <summary>
     /// Method <c>GenerateGrid</c> generates the cube-grid in world space.
     /// </summary>
     /// <param name="cubeSize">size of one side of a cube.</param>
     /// <param name="autoIncrement">id counter.</param>
-    void GenerateGrid(float cubeSize, AutoIncrement autoIncrement){
+    public void GenerateGrid(float cubeSize, AutoIncrement autoIncrement){
         // generate cubes in cubeSpace
-        for (float x = 0; x < gridSize * _cubeSize; x += _cubeSize){
-            for (float y = 0; y < gridSize * _cubeSize; y += _cubeSize){
-                for (float z = 0; z < gridSize * _cubeSize; z += _cubeSize){
+        for (float x = 0; x < _gridSize * _cubeSize; x += _cubeSize){
+            for (float y = 0; y < _gridSize * _cubeSize; y += _cubeSize){
+                for (float z = 0; z < _gridSize * _cubeSize; z += _cubeSize){
                     
                     // location in the cube-grid
                     int i = (int)(x / _cubeSize);
@@ -40,11 +56,11 @@ public class CreateEnvironment : MonoBehaviour
                     int k = (int)(z / _cubeSize);
                     
                     Location localLocation = new Location((int)(2 * x * 10), (int)(2 * y * 10), (int)(2 * z * 10));
-                    Location globalLocation = new Location(x + cubeSize / 2.0f - gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - gridSize * cubeSize / 2.0f);
+                    Location globalLocation = new Location(x + cubeSize / 2.0f - _gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - _gridSize * cubeSize / 2.0f);
 
                     // create and draw the cube
-                    Cube cube = new Cube(localLocation, globalLocation, transparentMaterial, transparentMaterial, autoIncrement);
-                    cube.GenerateCube(this.transform, cubePrefab);
+                    Cube cube = new Cube(localLocation, globalLocation, _transparentMaterial, _transparentMaterial, autoIncrement);
+                    cube.GenerateCube(this.transform, _cubePrefab);
                     
                     // save the cube
                     _cubes.Add(cube);
@@ -54,10 +70,13 @@ public class CreateEnvironment : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method <c>DrawGrid</c> "redraws" the cube-grid if it was already generated after the start and lost.
+    /// </summary>
     void DrawGrid(){
         if (_cubes.Count != 0){
             foreach (Cube cube in _cubes){
-                cube.GenerateCube(this.transform, cubePrefab);
+                cube.GenerateCube(this.transform, _cubePrefab);
             }
         }
     }
@@ -68,8 +87,6 @@ public class CreateEnvironment : MonoBehaviour
     public void ShowEnvironment(){
         if (!_isShown){ 
             _isShown = true;
-
-            _cubeSize = cubePrefab.transform.localScale.x;
             AutoIncrement autoIncrement = new AutoIncrement(); 
             
             // create cube-grid
@@ -93,15 +110,11 @@ public class CreateEnvironment : MonoBehaviour
             foreach (Cube cube in _cubes){
                 Destroy(cube.cubeObject);
             }
-            // _cubes.Clear();
-            
-            _gb = gameObject.GetComponent<GenerateTetromino>();
-            _gb.Hide();
         }
     }
  
     public void Start(){
-        _grid = new Cube[gridSize, gridSize, gridSize];
+        _grid = new Cube[_gridSize, _gridSize, _gridSize];
         _cubes = new List<Cube>();
     }
 }

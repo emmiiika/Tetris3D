@@ -1,10 +1,4 @@
-﻿using System;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Serialization;
-
-/// <summary>
+﻿/// <summary>
 /// Class <c>AutoIncrement</c> generates a counter for IDs. This class should have only one instance for unique IDs.
 /// </summary>
 public class AutoIncrement
