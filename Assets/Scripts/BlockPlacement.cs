@@ -6,40 +6,6 @@ using UnityEngine;
 /// Class <c>BlockPlacement</c> .
 /// </summary>
 public class BlockPlacement : MonoBehaviour{
-    
-    /// <summary>
-    /// Method <c>PlaceBlock</c> puts a tetromino (<c>block</c>) inside the cube-grid if possible.
-    /// </summary>
-    /// <param name="grid">the cube-grid.</param>
-    /// <param name="tetromino">one tetromino.</param>
-    /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public bool PlaceBlock(Cube[,,] grid, Tetromino tetromino, Location localLocation){
-        int x = (int)localLocation.x;
-        int y = (int)localLocation.y;
-        int z = (int)localLocation.z;
-
-        if (CanPlaceBlock(grid, tetromino, localLocation)){
-            Renderer renderer;
-            foreach (Transform child in tetromino.Blocks){
-                // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
-                renderer = child.GetComponent<Renderer>();
-                Material blockMaterial = renderer.sharedMaterial;
-
-                float i = child.localPosition.x;
-                float j = child.localPosition.y;
-                float k = child.localPosition.z;
-
-                grid[(int)(x + i), (int)(y + j), (int)(z + k)].SetMaterial(blockMaterial);
-                // grid[(int)(x + i), (int)(y + j), (int)(z + k)].Print();
-            }
-            return true;
-        }
-        
-        // TODO: save the actual tetromino into the grid? maybe not
-
-        return false;
-    }
-    
     /// <summary>
     /// Method <c>IsBlockInsideCube</c> resolves if tetromino (<c>block</c>) is inside the cube-grid.
     /// </summary>
@@ -124,8 +90,50 @@ public class BlockPlacement : MonoBehaviour{
         return false;
     }
 
-    public void changeBlockColorByPlacement(){
+    
+    /// <summary>
+    /// Method <c>PlaceBlock</c> puts a tetromino (<c>block</c>) inside the cube-grid if possible.
+    /// </summary>
+    /// <param name="grid">the cube-grid.</param>
+    /// <param name="tetromino">one tetromino.</param>
+    /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
+    public void SaveBlockPosition(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+        int x = (int)localLocation.x;
+        int y = (int)localLocation.y;
+        int z = (int)localLocation.z;
+
+        Renderer renderer;
+        foreach (Transform child in tetromino.Blocks){
+            // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
+            renderer = child.GetComponent<Renderer>();
+            Material blockMaterial = renderer.sharedMaterial;
+
+            float i = child.localPosition.x;
+            float j = child.localPosition.y;
+            float k = child.localPosition.z;
+
+            grid[(int)(x + i), (int)(y + j), (int)(z + k)].SetMaterial(blockMaterial);
+            // grid[(int)(x + i), (int)(y + j), (int)(z + k)].Print();
+        }
+    }
+    
+    
+    public void ShowBlockPosition(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+            
+    }
+    
+    
+    public bool PlaceBlock(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+        if (CanPlaceBlock(grid, tetromino, localLocation)){
+            SaveBlockPosition(grid, tetromino, localLocation);
+            return true;
+        }
+
+        ShowBlockPosition(grid, tetromino, localLocation);
+        return false; 
         
     }
+
+    
 
 }
