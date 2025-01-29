@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -11,17 +10,18 @@ public class CreateEnvironment : MonoBehaviour
     
     public int gridSize = 5; // size of cubeSpace
     public Material transparentMaterial;
+    public Material blueMaterial;
     
     private float _cubeSize; // size of one cube
     
     private List<Cube> _cubes; // a list of all cubes
     private Cube[,,] _grid; // 3D array of Cubes in cube-grid
 
-    private Transform _gridChild; // wrapper for the cube-grid 
+    // private Transform _gridChild; // wrapper for the cube-grid 
 
     private bool _isShown = false;
     private GenerateTetromino _gb;
-    private BlockPlacement _bp;
+    private TetrominoPlacement _bp;
 
     /// <summary>
     /// Method <c>GenerateGrid</c> generates the cube-grid in world space.
@@ -41,10 +41,10 @@ public class CreateEnvironment : MonoBehaviour
                     
                     Location localLocation = new Location((int)(2 * x * 10), (int)(2 * y * 10), (int)(2 * z * 10));
                     Location globalLocation = new Location(x + cubeSize / 2.0f - gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - gridSize * cubeSize / 2.0f);
-                    
+
                     // create and draw the cube
                     Cube cube = new Cube(localLocation, globalLocation, transparentMaterial, transparentMaterial, autoIncrement);
-                    cube.GenerateCube(_gridChild, cubePrefab);
+                    cube.GenerateCube(this.transform, cubePrefab);
                     
                     // save the cube
                     _cubes.Add(cube);
@@ -54,8 +54,12 @@ public class CreateEnvironment : MonoBehaviour
         }
     }
 
-    public void Start(){
-        _grid = new Cube[gridSize, gridSize, gridSize];
+    void DrawGrid(){
+        if (_cubes.Count != 0){
+            foreach (Cube cube in _cubes){
+                cube.GenerateCube(this.transform, cubePrefab);
+            }
+        }
     }
     
     /// <summary>
@@ -64,30 +68,17 @@ public class CreateEnvironment : MonoBehaviour
     public void ShowEnvironment(){
         if (!_isShown){ 
             _isShown = true;
-            _cubes = new List<Cube>();
-            _gridChild = transform.GetChild(0);
-            // parent = transform.parent;
 
             _cubeSize = cubePrefab.transform.localScale.x;
             AutoIncrement autoIncrement = new AutoIncrement(); 
             
             // create cube-grid
-            GenerateGrid(_cubeSize, autoIncrement);
-
-            // generate random block
-            _gb = gameObject.GetComponent<GenerateTetromino>();
-            Tetromino block1 = _gb.ChooseBlock();
-            Tetromino block2 = _gb.ChooseBlock();
-            Tetromino block3 = _gb.ChooseBlock();
-            
-            // place the random block
-            _bp = gameObject.GetComponent<BlockPlacement>();
-            // bool isB1Placed =_bp.PlaceBlock(_grid, block1, new Location(-1, 0, 0));
-            // Debug.Log(block1.name + " was placed: " + isB1Placed);
-            bool isB2Placed = _bp.PlaceBlock(_grid, block2, new Location(0, 0, 0));
-            // Debug.Log(block2.name + " was placed: " + isB2Placed);
-            // bool isB3Placed = _bp.PlaceBlock(_grid, block3, new Location(2, 0, 0));
-            // Debug.Log(block3.name + " was placed: " + isB3Placed);
+            if (_cubes.Count == 0){
+                GenerateGrid(_cubeSize, autoIncrement);
+            }
+            else{ // draw existing
+                DrawGrid();
+            }
         }
     }
 
@@ -102,15 +93,15 @@ public class CreateEnvironment : MonoBehaviour
             foreach (Cube cube in _cubes){
                 Destroy(cube.cubeObject);
             }
-            _cubes.Clear();
+            // _cubes.Clear();
             
             _gb = gameObject.GetComponent<GenerateTetromino>();
             _gb.Hide();
         }
     }
  
-    void Update()
-    {
-        
+    public void Start(){
+        _grid = new Cube[gridSize, gridSize, gridSize];
+        _cubes = new List<Cube>();
     }
 }
