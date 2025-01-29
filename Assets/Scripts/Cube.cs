@@ -16,9 +16,6 @@ public class Cube {
     public Material transparentMaterial;
     public int cubeSize;
     public GameObject cubeObject;
-    
-    private Renderer _renderer;
-    private Location _loc;
 
     /// <summary>
     /// Constructor for a <c>Cube</c> object.

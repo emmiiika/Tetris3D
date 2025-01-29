@@ -20,9 +20,8 @@ public class CreateEnvironment : MonoBehaviour
     private Transform _gridChild; // wrapper for the cube-grid 
 
     private bool _isShown = false;
-    private GenerateBlock _gb;
+    private GenerateTetromino _gb;
     private BlockPlacement _bp;
-
 
     /// <summary>
     /// Method <c>GenerateGrid</c> generates the cube-grid in world space.
@@ -76,17 +75,17 @@ public class CreateEnvironment : MonoBehaviour
             GenerateGrid(_cubeSize, autoIncrement);
 
             // generate random block
-            _gb = gameObject.GetComponent<GenerateBlock>();
-            GameObject block1 = _gb.ChooseBlock();
-            GameObject block2 = _gb.ChooseBlock();
-            GameObject block3 = _gb.ChooseBlock();
+            _gb = gameObject.GetComponent<GenerateTetromino>();
+            Tetromino block1 = _gb.ChooseBlock();
+            Tetromino block2 = _gb.ChooseBlock();
+            Tetromino block3 = _gb.ChooseBlock();
             
             // place the random block
             _bp = gameObject.GetComponent<BlockPlacement>();
             // bool isB1Placed =_bp.PlaceBlock(_grid, block1, new Location(-1, 0, 0));
             // Debug.Log(block1.name + " was placed: " + isB1Placed);
             bool isB2Placed = _bp.PlaceBlock(_grid, block2, new Location(0, 0, 0));
-            Debug.Log(block2.name + " was placed: " + isB2Placed);
+            // Debug.Log(block2.name + " was placed: " + isB2Placed);
             // bool isB3Placed = _bp.PlaceBlock(_grid, block3, new Location(2, 0, 0));
             // Debug.Log(block3.name + " was placed: " + isB3Placed);
         }
@@ -105,7 +104,7 @@ public class CreateEnvironment : MonoBehaviour
             }
             _cubes.Clear();
             
-            _gb = gameObject.GetComponent<GenerateBlock>();
+            _gb = gameObject.GetComponent<GenerateTetromino>();
             _gb.Hide();
         }
     }

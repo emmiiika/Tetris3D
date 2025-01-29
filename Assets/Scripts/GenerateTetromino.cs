@@ -6,24 +6,22 @@ using UnityEngine.UI;
 /// <summary>
 /// Class <c>GenerateBlock</c> generates a random tetromino.
 /// </summary>
-public class GenerateBlock : MonoBehaviour
+public class GenerateTetromino : MonoBehaviour
 {
-    public List<GameObject> blocks; 
-
-    private GameObject _chosenBlock; // already generated random tetromino
-    
-    private float _screenWidth;
-    private float _screenHeight;
-
+    public List<GameObject> blocks; // all tetrominos
     public TMP_Text blockName;
-    private GameObject _block;
+
+    private Tetromino _chosenBlock; // generated random tetromino
+
+    // private float _screenWidth;
+    // private float _screenHeight;
 
     /// <summary>
     /// Method <c>ChooseBlock</c> returns a random tetromino.
     /// </summary>
-    public GameObject ChooseBlock(){
+    public Tetromino ChooseBlock(){
         int index = Random.Range(0,blocks.Count);
-        return blocks[index];
+        return new Tetromino(blocks[index]);
     }
 
 
@@ -31,12 +29,12 @@ public class GenerateBlock : MonoBehaviour
     /// Method <c>GetBlock</c> generates a random tetromino if there is not one already generated.
     /// If one is already saved, the method returns the saved one.
     /// </summary>
-    public GameObject GetBlock(){
+    public Tetromino GetBlock(){
         if (_chosenBlock == null){
             _chosenBlock = ChooseBlock();
         }
 
-        blockName.text = _chosenBlock.name;
+        blockName.text = _chosenBlock.Name;
 
         return _chosenBlock;
     }
