@@ -801,7 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 1851350512781686953, guid: fcb17cc364747df71bfff78189c26221,
     type: 3}
-  gridSize: 4
+  gridSize: 5
   transparentMaterial: {fileID: 2100000, guid: 4ca75abf1ba327feb9badecf1a270cca, type: 2}
 --- !u!114 &1261126515
 MonoBehaviour:
