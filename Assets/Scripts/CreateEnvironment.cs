@@ -26,6 +26,7 @@ public class CreateEnvironment : MonoBehaviour
     /// </summary>
     /// <param name="cubePrefab">prefab of a cube.</param>
     /// <param name="transparentMaterial">transparent material.</param>
+    /// <param name="fullyTransparentMaterial">fully transparent material.</param>
     /// <param name="gridSize">size of the cube-grid (preset to 5).</param>
     /// <param name="cubeSize">size of one side of a cube (preset to 0).</param>
     public void Init(GameObject cubePrefab, Material transparentMaterial, int gridSize = 5, float cubeSize = 0){
@@ -57,16 +58,16 @@ public class CreateEnvironment : MonoBehaviour
         _cubes = new List<Cube>();
         
         // generate cubes in cube-grid
-        for (float x = 0; x < _gridSize * _cubeSize; x += _cubeSize){
-            for (float y = 0; y < _gridSize * _cubeSize; y += _cubeSize){
-                for (float z = 0; z < _gridSize * _cubeSize; z += _cubeSize){
+        for (int i = 0; i < _gridSize; i ++){
+            for (int j = 0; j < _gridSize; j ++){
+                for (int k = 0; k < _gridSize; k ++){
                     
                     // location in the cube-grid
-                    int i = (int)(x / _cubeSize);
-                    int j = (int)(y / _cubeSize);
-                    int k = (int)(z / _cubeSize);
+                    float x = i * _cubeSize;
+                    float y = j * _cubeSize;
+                    float z = k * _cubeSize;
                     
-                    Location localLocation = new Location((int)(2 * x * 10), (int)(2 * y * 10), (int)(2 * z * 10));
+                    Location localLocation = new Location(i,j,k);
                     Location globalLocation = new Location(x + cubeSize / 2.0f - _gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - _gridSize * cubeSize / 2.0f);
 
                     // create and draw the cube

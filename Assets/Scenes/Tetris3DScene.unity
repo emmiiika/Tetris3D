@@ -3581,7 +3581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886328de6a5c14cbb85854fdf1a5085b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StatusFilter: 1
+  StatusFilter: 0
   UsePoseSmoothing: 0
   AnimationCurve:
     serializedVersion: 2
@@ -3652,9 +3652,9 @@ MonoBehaviour:
   PreviewVisible: 1
   RuntimeOcclusion: 0
   RuntimeCollider: 0
-  mTrackableName: Aruco
+  mTrackableName: Tetris
   mInitializedInEditor: 1
-  mDataSetPath: Vuforia/Aruco.xml
+  mDataSetPath: Vuforia/Tetris.xml
   mAspectRatio: 1
   mImageTargetType: 0
   mWidth: 1
@@ -3694,8 +3694,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mObserverBehaviour: {fileID: 1979063932}
   mHiddenRoot: {fileID: 0}
-  mTargetName: Aruco
-  mDatasetName: Vuforia/Aruco.xml
+  mTargetName: Tetris
+  mDatasetName: Vuforia/Tetris.xml
   mCastedBehaviour: {fileID: 1979063932}
   mMeshFilter: {fileID: 0}
   mMeshRenderer: {fileID: 0}

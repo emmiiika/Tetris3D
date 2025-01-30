@@ -29,16 +29,25 @@ public class Main : MonoBehaviour{
     public void Show(){
         _grid = _cE.ShowEnvironment();
         
-        Tetromino tetromino = _gT.GetTetromino();
-        Location localLocation = new Location(0, 0, 0);
+        Tetromino tetromino1 = _gT.RandomTetromino();
+        Location localLocation1 = new Location(0, 0, 0);
+        Debug.Log("1: " + tetromino1.Name);
+        
+        Tetromino tetromino2 = _gT.RandomTetromino();
+        Location localLocation2 = new Location(2, 0, 0);
+        Debug.Log("2: " + tetromino2.Name);
+        
+        Tetromino tetromino3 = _gT.RandomTetromino();
+        Location localLocation3 = new Location(2, 1, 2);
+        Debug.Log("3: " + tetromino3.Name);
 
 
-        // Debug.Log("Saving tetromino___________________");
-        // _tP.OnPlace(_grid, tetromino, localLocation);
-        // Debug.Log("Saved tetromino___________________");
-        Debug.Log("Placing tetromino_____________________");
-        _tP.PlaceTetromino(_grid, tetromino, localLocation);
-        Debug.Log("Placed tetromino_____________________");
+        _tP.OnPlace(_grid, tetromino1, localLocation1);
+        Debug.Log("mid1");
+        _tP.ShowTetrominoPreview(_grid, tetromino2, localLocation2);
+        Debug.Log("mid2");
+        _tP.OnPlace(_grid, tetromino3, localLocation3);
+
     }
     
     public void Hide(){

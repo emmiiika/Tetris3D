@@ -6,6 +6,7 @@
 public class TetrominoPlacement : MonoBehaviour{
     
     public Material trasparentMaterial;
+    public Material wrongPlacementMaterial;
     
     /// <summary>
     /// Method <c>IsTetrominoInsideCube</c> resolves if tetromino (<c>block</c>) is inside the cube-grid.
@@ -28,9 +29,9 @@ public class TetrominoPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
 
-            if (((int)(x + i) < 0 || (int)(x + i) >= gridSize) ||
-                ((int)(y + j) < 0 || (int)(y + j) >= gridSize) ||
-                ((int)(z + k) < 0 || (int)(z + k) >= gridSize)){
+            if (((int)(x + i) < 0 || (int)(x + i) > gridSize) ||
+                ((int)(y + j) < 0 || (int)(y + j) > gridSize) ||
+                ((int)(z + k) < 0 || (int)(z + k) > gridSize)){
                 isInside = false;
                 break;
             }
@@ -76,7 +77,6 @@ public class TetrominoPlacement : MonoBehaviour{
     public bool CanPlaceTetromino(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
         // the whole tetromino is inside the cube-grid
         bool isInside = IsTetrominoInsideCube(grid, tetromino, localLocation);
-        
         if (isInside){
             // no part of the tetromino is covering other tetromino
             bool isCoveringOther = IsCoveringOtherTetrominos(grid, tetromino, localLocation);
@@ -96,7 +96,7 @@ public class TetrominoPlacement : MonoBehaviour{
         int x = (int)localLocation.x;
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
-
+        
         Renderer renderer;
         foreach (Transform child in tetromino.Blocks){
             // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
@@ -124,20 +124,28 @@ public class TetrominoPlacement : MonoBehaviour{
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
 
+        Material material = null;
+        if (IsCoveringOtherTetrominos(grid, tetromino, localLocation)){
+            material = wrongPlacementMaterial;
+        }
+        
         Renderer renderer;
         foreach (Transform child in tetromino.Blocks){
             // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
             renderer = child.GetComponent<Renderer>();
-            Debug.Log(renderer.sharedMaterial);
-            Material blockMaterial = renderer.sharedMaterial;
+
+            if (material == null){
+                material = renderer.sharedMaterial;
+            }
 
             float i = child.localPosition.x;
             float j = child.localPosition.y;
             float k = child.localPosition.z;
-
-            // save the current material before previewing
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].material);
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
+            
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(material);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetActive(true);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(true);
+            // grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
         }
     }
     
@@ -162,7 +170,9 @@ public class TetrominoPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
 
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].material);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetActive(true);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(false);
         }
     }
     

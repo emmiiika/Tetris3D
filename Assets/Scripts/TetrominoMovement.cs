@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 
 public class TetrominoMovement : MonoBehaviour{
 
+    
 
     public void onMoveLeft(){}
     public void onMoveRight(){}
