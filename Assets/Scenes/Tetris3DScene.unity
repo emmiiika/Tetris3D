@@ -3652,13 +3652,13 @@ MonoBehaviour:
   PreviewVisible: 1
   RuntimeOcclusion: 0
   RuntimeCollider: 0
-  mTrackableName: dict_5x5_50_id_42
+  mTrackableName: Aruco
   mInitializedInEditor: 1
   mDataSetPath: Vuforia/Aruco.xml
   mAspectRatio: 1
   mImageTargetType: 0
-  mWidth: 0.1
-  mHeight: 0.1
+  mWidth: 1
+  mHeight: 1
   mRuntimeTexture: {fileID: 0}
   mMotionHint: 1
   mTrackingOptimization: 0
@@ -3694,7 +3694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mObserverBehaviour: {fileID: 1979063932}
   mHiddenRoot: {fileID: 0}
-  mTargetName: dict_5x5_50_id_42
+  mTargetName: Aruco
   mDatasetName: Vuforia/Aruco.xml
   mCastedBehaviour: {fileID: 1979063932}
   mMeshFilter: {fileID: 0}

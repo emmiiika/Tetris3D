@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Class <c>GenerateBlock</c> generates a random tetromino.
 /// </summary>
-public class GenerateTetromino : MonoBehaviour
+public class TetrominoGenerating : MonoBehaviour
 {
     public List<GameObject> blocks; // all tetrominos
     public TMP_Text blockName;

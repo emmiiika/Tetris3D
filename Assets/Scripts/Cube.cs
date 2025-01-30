@@ -40,12 +40,40 @@ public class Cube {
         this.cubeObject = MonoBehaviour.Instantiate(cubePrefab, parent);
         cubeObject.transform.localPosition = this.GlobalLocation.ToVector3();
     }
+    
+    /// <summary>
+    /// Method <c>GenerateCube</c> "draws" <c>Cube</c> in world space.
+    /// </summary>
+    /// <param name="parent"><c>Transform</c> of which the <c>Cube</c> will be a child.</param>
+    /// <param name="cubePrefab">prefab object of a cube.</param>
+    /// <param name="isVisible">whether the cube is visible.</param>
+    public void GenerateCube(Transform parent, GameObject cubePrefab, bool isVisible){
+        this.cubeObject = MonoBehaviour.Instantiate(cubePrefab, parent);
+        cubeObject.transform.localPosition = this.GlobalLocation.ToVector3();
 
+        if (isVisible){
+            cubeObject.SetActive(true);
+        }
+        else{
+            cubeObject.SetActive(false);
+        }
+    }
+
+
+    public void SetActive(bool isVisible){
+        if (isVisible){
+            cubeObject.SetActive(true);
+        }
+        else{
+            cubeObject.SetActive(false);
+        }
+    }
+    
+    
     /// <summary>
     /// Util method for debbuging. Prints out basic info about a cube.
     /// </summary>
     public void Print(){
-        // Debug.Log("Cube (" + this.id + ")" + "\n\tlocalLocation: " + this.LocalLocation.ToVector3() + "\n\tglobalLocation: " + this.GlobalLocation.ToVector3() + "\n\tmaterial: " + this.material.name);
         Debug.Log("Cube (" + this.id + ")" + "\n\tlocalLocation: " + LocalLocation.ToVector3() + "\n\tmaterial: " + this.material.name);
 
     }
@@ -54,13 +82,17 @@ public class Cube {
     /// Method <c>SetMaterial</c> sets <c>material</c> of <c>Cube</c>.
     /// </summary>
     /// <param name="material">new material.</param>
-    public void SetMaterial(Material material){
+    public void 
+        SetMaterial(Material material){
+        // Debug.Log("really setting the new material");
         this.material = material;
         
+        // Debug.Log("going to color blocks: " + cubeObject);
         foreach (Transform child in cubeObject.transform){
+            // Debug.Log("\tColoring block");
             if (child.name == "Cube"){
+                // Debug.Log("it is a cube");
                 child.GetComponent<Renderer>().material = material;
-
             }
         }
     }

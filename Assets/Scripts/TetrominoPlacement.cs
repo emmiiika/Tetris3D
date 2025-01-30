@@ -4,13 +4,17 @@
 /// Class <c>TetrominoPlacement</c> .
 /// </summary>
 public class TetrominoPlacement : MonoBehaviour{
+    
+    public Material trasparentMaterial;
+    
     /// <summary>
     /// Method <c>IsTetrominoInsideCube</c> resolves if tetromino (<c>block</c>) is inside the cube-grid.
     /// </summary>
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public bool IsTetrominoInsideCube(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+    public bool IsTetrominoInsideCube(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+        // Debug.Log("IsInside");
         int x = (int)localLocation.x;
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
@@ -41,7 +45,7 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public bool IsCoveringOtherTetrominos(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+    public bool IsCoveringOtherTetrominos(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
         int x = (int)localLocation.x;
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
@@ -55,7 +59,7 @@ public class TetrominoPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
 
-            if (grid[(int)(x + i), (int)(y + j), (int)(z + k)].IsOccupied()){
+            if (grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].IsOccupied()){
                 isCovering = true;
                 break;
             }
@@ -69,7 +73,7 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public bool CanPlaceTetromino(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+    public bool CanPlaceTetromino(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
         // the whole tetromino is inside the cube-grid
         bool isInside = IsTetrominoInsideCube(grid, tetromino, localLocation);
         
@@ -88,7 +92,7 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public void SaveTetrominoPosition(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+    public void SaveTetrominoPosition(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
         int x = (int)localLocation.x;
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
@@ -103,43 +107,79 @@ public class TetrominoPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
 
-            grid[(int)(x + i), (int)(y + j), (int)(z + k)].SetMaterial(blockMaterial);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
         }
     }
     
     
-    public void ShowTetrominoPosition(Cube[,,] grid, Tetromino tetromino, Location localLocation){
-            
+    /// <summary>
+    /// Method <c>ShowTetrominoPreview</c> show a preview of a new possible tetromino on <c>localLocation</c>.
+    /// </summary>
+    /// <param name="grid">the cube-grid.</param>
+    /// <param name="tetromino">one tetromino.</param>
+    /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
+    public void ShowTetrominoPreview(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+        int x = (int)localLocation.x;
+        int y = (int)localLocation.y;
+        int z = (int)localLocation.z;
+
+        Renderer renderer;
+        foreach (Transform child in tetromino.Blocks){
+            // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
+            renderer = child.GetComponent<Renderer>();
+            Debug.Log(renderer.sharedMaterial);
+            Material blockMaterial = renderer.sharedMaterial;
+
+            float i = child.localPosition.x;
+            float j = child.localPosition.y;
+            float k = child.localPosition.z;
+
+            // save the current material before previewing
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].material);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
+        }
+    }
+    
+    /// <summary>
+    /// Method <c>HideTetrominoPreview</c> hide a preview of a new possible tetromino from <c>localLocation</c>.
+    /// </summary>
+    /// <param name="grid">the cube-grid.</param>
+    /// <param name="tetromino">one tetromino.</param>
+    /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
+    public void HideTetrominoPreview(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+        int x = (int)localLocation.x;
+        int y = (int)localLocation.y;
+        int z = (int)localLocation.z;
+
+        Renderer renderer;
+        foreach (Transform child in tetromino.Blocks){
+            // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
+            renderer = child.GetComponent<Renderer>();
+            Material blockMaterial = renderer.sharedMaterial;
+
+            float i = child.localPosition.x;
+            float j = child.localPosition.y;
+            float k = child.localPosition.z;
+
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].material);
+        }
     }
     
     
-    public bool PlaceTetromino(Cube[,,] grid, Tetromino tetromino, Location localLocation){
+    public bool PlaceTetromino(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+        if (CanPlaceTetromino(grid, tetromino, localLocation)){
+            ShowTetrominoPreview(grid, tetromino, localLocation);
+            return true;
+        }
+        return false; 
+    }
+
+    public bool OnPlace(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
         if (CanPlaceTetromino(grid, tetromino, localLocation)){
             SaveTetrominoPosition(grid, tetromino, localLocation);
             return true;
         }
-        ShowTetrominoPosition(grid, tetromino, localLocation);
         return false; 
     }
-
-    public void onPlace(){
-        
-    }
 }
-
-/*
-    // generate random block
-    _gb = gameObject.GetComponent<GenerateTetromino>();
-    Tetromino block1 = _gb.ChooseBlock();
-    Tetromino block2 = _gb.ChooseBlock();
-    Tetromino block3 = _gb.ChooseBlock();
-    
-    // place the random block
-    _bp = gameObject.GetComponent<TetrominoPlacement>();
-    // bool isB1Placed =_bp.PlaceBlock(_grid, block1, new Location(-1, 0, 0));
-    // Debug.Log(block1.name + " was placed: " + isB1Placed);
-    bool isB2Placed = _bp.PlaceTetromino(_grid, block2, new Location(0, 0, 0));
-    // Debug.Log(block2.name + " was placed: " + isB2Placed);
-    // bool isB3Placed = _bp.PlaceBlock(_grid, block3, new Location(2, 0, 0));
-    // Debug.Log(block3.name + " was placed: " + isB3Placed);
-*/

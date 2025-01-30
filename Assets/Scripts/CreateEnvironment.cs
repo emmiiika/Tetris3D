@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -10,14 +11,16 @@ public class CreateEnvironment : MonoBehaviour
     private int _gridSize; // size of cube-grid
     private Material _transparentMaterial;
     private float _cubeSize; // size of one cube
+    private AutoIncrement _autoIncrement;
     
-    private List<Cube> _cubes; // a list of all cubes
-    private Cube[,,] _grid; // 3D array of Cubes in cube-grid
+    private List<Cube> _cubes = new List<Cube>(); // a list of all cubes
+    private Cube[,,,] _grid; // 3D array of [actualCube, previewCube] in cube-grid
 
-    private bool _isShown = false;
-    private GenerateTetromino _gb;
+    private bool _isShown;
+    private TetrominoGenerating _gb;
     private TetrominoPlacement _bp;
 
+    
     /// <summary>
     /// Method <c>Init</c> sets the needed private parameters.
     /// </summary>
@@ -30,14 +33,19 @@ public class CreateEnvironment : MonoBehaviour
         this._gridSize = gridSize;
         this._transparentMaterial = transparentMaterial;
 
+        this._grid = new Cube[_gridSize, _gridSize, _gridSize, 2];
+        this._cubes = new List<Cube>();
+        
         if (cubeSize == 0){
             this._cubeSize = _cubePrefab.transform.localScale.x;
         }
         else{
             this._cubeSize = cubeSize;
         }
+        
+        this._autoIncrement = new AutoIncrement();
+        this._isShown = false;
 }
-    
     
     /// <summary>
     /// Method <c>GenerateGrid</c> generates the cube-grid in world space.
@@ -45,7 +53,10 @@ public class CreateEnvironment : MonoBehaviour
     /// <param name="cubeSize">size of one side of a cube.</param>
     /// <param name="autoIncrement">id counter.</param>
     public void GenerateGrid(float cubeSize, AutoIncrement autoIncrement){
-        // generate cubes in cubeSpace
+        
+        _cubes = new List<Cube>();
+        
+        // generate cubes in cube-grid
         for (float x = 0; x < _gridSize * _cubeSize; x += _cubeSize){
             for (float y = 0; y < _gridSize * _cubeSize; y += _cubeSize){
                 for (float z = 0; z < _gridSize * _cubeSize; z += _cubeSize){
@@ -59,12 +70,16 @@ public class CreateEnvironment : MonoBehaviour
                     Location globalLocation = new Location(x + cubeSize / 2.0f - _gridSize * cubeSize / 2.0f, y + cubeSize / 2.0f, z + cubeSize / 2.0f  - _gridSize * cubeSize / 2.0f);
 
                     // create and draw the cube
-                    Cube cube = new Cube(localLocation, globalLocation, _transparentMaterial, _transparentMaterial, autoIncrement);
-                    cube.GenerateCube(this.transform, _cubePrefab);
+                    Cube actualCube = new Cube(localLocation, globalLocation, _transparentMaterial, _transparentMaterial, autoIncrement);
+                    actualCube.GenerateCube(this.transform, _cubePrefab); // draw the actual cube
+                    _cubes.Add(actualCube);
+                    
+                    Cube previewCube = new Cube(localLocation, globalLocation, _transparentMaterial, _transparentMaterial, autoIncrement);
+                    previewCube.GenerateCube(this.transform, _cubePrefab, false); // draw the actual cube
                     
                     // save the cube
-                    _cubes.Add(cube);
-                    _grid[i, j, k] = cube;
+                    _grid[i, j, k, 0] = actualCube;
+                    _grid[i, j, k, 1] = previewCube;
                 }
             }
         }
@@ -74,29 +89,34 @@ public class CreateEnvironment : MonoBehaviour
     /// Method <c>DrawGrid</c> "redraws" the cube-grid if it was already generated after the start and lost.
     /// </summary>
     void DrawGrid(){
-        if (_cubes.Count != 0){
-            foreach (Cube cube in _cubes){
-                cube.GenerateCube(this.transform, _cubePrefab);
-            }
+        foreach (Cube cube in _cubes){
+            cube.SetActive(true);
+
         }
     }
     
     /// <summary>
     /// Method <c>ShowEnvironment</c> show the cube-grid in world space.
     /// </summary>
-    public void ShowEnvironment(){
-        if (!_isShown){ 
+    /// <returns>A 3D cube-grid with cells containing two values - the actual
+    /// saved cube in the cell and a preview of a cube, which can be placed
+    /// there.
+    /// </returns>
+    public Cube[,,,] ShowEnvironment(){
+        if (!_isShown){
             _isShown = true;
-            AutoIncrement autoIncrement = new AutoIncrement(); 
-            
+
             // create cube-grid
             if (_cubes.Count == 0){
-                GenerateGrid(_cubeSize, autoIncrement);
+                GenerateGrid(_cubeSize, _autoIncrement);
             }
-            else{ // draw existing
+            else{
+                // draw existing
                 DrawGrid();
             }
+            return _grid;
         }
+        return null;
     }
 
     /// <summary>
@@ -108,13 +128,8 @@ public class CreateEnvironment : MonoBehaviour
             
             // hide all cubes from grid
             foreach (Cube cube in _cubes){
-                Destroy(cube.cubeObject);
+                cube.SetActive(false);
             }
         }
-    }
- 
-    public void Start(){
-        _grid = new Cube[_gridSize, _gridSize, _gridSize];
-        _cubes = new List<Cube>();
     }
 }
