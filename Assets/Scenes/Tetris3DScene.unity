@@ -1756,6 +1756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143185b46d5e4546b57bfecaa5caa7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trasparentMaterial: {fileID: 2100000, guid: 4ca75abf1ba327feb9badecf1a270cca, type: 2}
 --- !u!114 &877463269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3580,7 +3581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886328de6a5c14cbb85854fdf1a5085b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StatusFilter: 0
+  StatusFilter: 1
   UsePoseSmoothing: 0
   AnimationCurve:
     serializedVersion: 2
@@ -3609,9 +3610,9 @@ MonoBehaviour:
   OnTargetFound:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreateEnvironment, Assembly-CSharp
-        m_MethodName: ShowEnvironment
+      - m_Target: {fileID: 887854160}
+        m_TargetAssemblyTypeName: Main, Assembly-CSharp
+        m_MethodName: Show
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3620,13 +3621,13 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
   OnTargetLost:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CreateEnvironment, Assembly-CSharp
-        m_MethodName: HideEnvironment
+      - m_Target: {fileID: 887854160}
+        m_TargetAssemblyTypeName: Main, Assembly-CSharp
+        m_MethodName: Hide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3635,7 +3636,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!114 &1979063932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3656,8 +3657,8 @@ MonoBehaviour:
   mDataSetPath: Vuforia/Aruco.xml
   mAspectRatio: 1
   mImageTargetType: 0
-  mWidth: 1
-  mHeight: 1
+  mWidth: 0.1
+  mHeight: 0.1
   mRuntimeTexture: {fileID: 0}
   mMotionHint: 1
   mTrackingOptimization: 0
