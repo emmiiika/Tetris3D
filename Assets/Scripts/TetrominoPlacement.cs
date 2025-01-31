@@ -7,6 +7,23 @@ public class TetrominoPlacement : MonoBehaviour{
     
     public Material trasparentMaterial;
     public Material wrongPlacementMaterial;
+
+    private CreateEnvironment _cE;
+    private TetrominoGenerating _tGenerating;
+    private Cube[,,,] _grid;
+
+    
+    public void Start(){
+        Debug.Log("TetrominoPlacement start");
+        GameObject grid = gameObject.transform.parent.Find("Grid").gameObject;
+        _cE = grid.GetComponent<CreateEnvironment>();
+
+        _tGenerating = gameObject.GetComponent<TetrominoGenerating>();
+        
+        Debug.Log("getting tetromino and location");
+        Tetromino tetromino = _tGenerating.GetTetromino();
+        _grid = _cE.Grid;
+    }
     
     /// <summary>
     /// Method <c>IsTetrominoInsideCube</c> resolves if tetromino (<c>block</c>) is inside the cube-grid.
@@ -15,12 +32,11 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
     public bool IsTetrominoInsideCube(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        // Debug.Log("IsInside");
         int x = (int)localLocation.x;
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
 
-        int gridSize = grid.Length;
+        int gridSize = grid.GetLength(0);
 
         bool isInside = true;
         // find out if every part of the tetromino is inside the cube-grid
@@ -28,10 +44,13 @@ public class TetrominoPlacement : MonoBehaviour{
             float i = child.localPosition.x;
             float j = child.localPosition.y;
             float k = child.localPosition.z;
-
-            if (((int)(x + i) < 0 || (int)(x + i) > gridSize) ||
-                ((int)(y + j) < 0 || (int)(y + j) > gridSize) ||
-                ((int)(z + k) < 0 || (int)(z + k) > gridSize)){
+            
+            Debug.Log(gridSize+" "+ i + "," + j + "," + k);
+            Debug.Log(x + "," + y + "," + z);
+            
+            if (((int)(x + i) < 0 || (int)(x + i) >= gridSize) ||
+                ((int)(y + j) < 0 || (int)(y + j) >= gridSize) ||
+                ((int)(z + k) < 0 || (int)(z + k) >= gridSize)){
                 isInside = false;
                 break;
             }
@@ -51,8 +70,8 @@ public class TetrominoPlacement : MonoBehaviour{
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
 
-        int gridSize = grid.Length;
 
+        Debug.Log(tetromino.Blocks.Length);
         bool isCovering = false;
         foreach (Transform child in tetromino.Blocks){
             // if any part of the tetromino is covering any other block
@@ -123,7 +142,7 @@ public class TetrominoPlacement : MonoBehaviour{
         int x = (int)localLocation.x;
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
-
+        
         Material material = null;
         if (IsCoveringOtherTetrominos(grid, tetromino, localLocation)){
             material = wrongPlacementMaterial;
@@ -143,9 +162,7 @@ public class TetrominoPlacement : MonoBehaviour{
             float k = child.localPosition.z;
             
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(material);
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetActive(true);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(true);
-            // grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
         }
     }
     
@@ -171,25 +188,23 @@ public class TetrominoPlacement : MonoBehaviour{
             float k = child.localPosition.z;
 
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetActive(true);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(false);
         }
     }
-    
-    
-    public bool PlaceTetromino(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        if (CanPlaceTetromino(grid, tetromino, localLocation)){
-            ShowTetrominoPreview(grid, tetromino, localLocation);
-            return true;
-        }
-        return false; 
-    }
 
-    public bool OnPlace(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        if (CanPlaceTetromino(grid, tetromino, localLocation)){
-            SaveTetrominoPosition(grid, tetromino, localLocation);
-            return true;
+    /// <summary>
+    /// Method <c>OnTetrominoPlace</c> on "Place" button click saves current tetromino on its current location.
+    /// </summary>=
+    public void OnTetrominoPlace(){
+        Debug.Log(gameObject.name + " " + gameObject.transform.parent.name);
+        Tetromino tetromino = _tGenerating.GetTetromino();
+        Location localLocation = _tGenerating.localLocation;
+        
+        if (CanPlaceTetromino(_grid, tetromino, localLocation)){
+            SaveTetrominoPosition(_grid, tetromino, localLocation);
+            _tGenerating.DeleteTetromino();
+            tetromino = _tGenerating.GetTetromino();
+            ShowTetrominoPreview(_grid, tetromino, _tGenerating.localLocation);
         }
-        return false; 
     }
 }

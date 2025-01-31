@@ -59,7 +59,10 @@ public class Cube {
         }
     }
 
-
+    /// <summary>
+    /// Method <c>SetActive</c> shows/hides <c>Cube</c> in world space.
+    /// </summary>
+    /// <param name="isVisible">if the cube should be visible.</param>
     public void SetActive(bool isVisible){
         if (isVisible){
             cubeObject.SetActive(true);

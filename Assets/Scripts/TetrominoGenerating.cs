@@ -9,6 +9,8 @@ public class TetrominoGenerating : MonoBehaviour
 {
     public List<GameObject> blocks; // all tetrominos
     public TMP_Text blockName;
+    
+    public Location localLocation;
 
     private Tetromino _chosenBlock; // generated tetromino
 
@@ -20,7 +22,6 @@ public class TetrominoGenerating : MonoBehaviour
         return new Tetromino(blocks[index]);
     }
 
-
     /// <summary>
     /// Method <c>GetBlock</c> generates a random tetromino if there is not one already generated.
     /// If one is already saved, the method returns the saved one.
@@ -28,9 +29,19 @@ public class TetrominoGenerating : MonoBehaviour
     public Tetromino GetTetromino(){
         if (_chosenBlock == null){
             _chosenBlock = RandomTetromino();
+            localLocation = new Location(0, 0, 0);
         }
         blockName.text = _chosenBlock.Name; // change the shown block name
 
         return _chosenBlock;
     }
+
+    /// <summary>
+    /// Method <c>DeleteTetromino</c> deletes current tetromino.
+    /// </summary>
+    public void DeleteTetromino(){
+        _chosenBlock = null;
+        localLocation = new Location(0, 0, 0);
+    }
+
 }
