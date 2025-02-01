@@ -10,6 +10,7 @@ public class TetrominoMovement : MonoBehaviour{
     private TetrominoGenerating _tGenerating;
     private TetrominoPlacement _tPlacement;
     private CameraPositioning _cameraPositioning;
+    private Transform _parentWrapper;
     
     private Cube[,,,] _grid;
     
@@ -19,6 +20,10 @@ public class TetrominoMovement : MonoBehaviour{
         
         _tGenerating = gameObject.GetComponent<TetrominoGenerating>();
         _tPlacement = gameObject.GetComponent<TetrominoPlacement>();
+
+        _cameraPositioning = new CameraPositioning();
+        
+        _parentWrapper = gameObject.transform.parent;
     }
 
     private Tuple<Tetromino, Location> getBasicInformation(){
@@ -34,7 +39,7 @@ public class TetrominoMovement : MonoBehaviour{
         Tetromino tetromino = basicInformation.Item1;
         Location localLocation = basicInformation.Item2;
         
-        Vector3[] directionArray = _cameraPositioning.GetDirectionArray();
+        Vector3[] directionArray = _cameraPositioning.GetDirectionArray(_parentWrapper);
         Vector3 leftMove = directionArray[1];
         
         Location newLocalLocation = new Location(localLocation.x + leftMove.x, localLocation.y + leftMove.y, localLocation.z + leftMove.z);
@@ -51,7 +56,7 @@ public class TetrominoMovement : MonoBehaviour{
         Tetromino tetromino = basicInformation.Item1;
         Location localLocation = basicInformation.Item2;
         
-        Vector3[] directionArray = _cameraPositioning.GetDirectionArray();
+        Vector3[] directionArray = _cameraPositioning.GetDirectionArray(_parentWrapper);
         Vector3 rightMove = directionArray[0];
         
         Location newLocalLocation = new Location(localLocation.x + rightMove.x, localLocation.y + rightMove.y, localLocation.z + rightMove.z);

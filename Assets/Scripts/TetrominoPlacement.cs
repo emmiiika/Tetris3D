@@ -14,13 +14,11 @@ public class TetrominoPlacement : MonoBehaviour{
 
     
     public void Start(){
-        Debug.Log("TetrominoPlacement start");
         GameObject grid = gameObject.transform.parent.Find("Grid").gameObject;
         _cE = grid.GetComponent<CreateEnvironment>();
 
         _tGenerating = gameObject.GetComponent<TetrominoGenerating>();
         
-        Debug.Log("getting tetromino and location");
         Tetromino tetromino = _tGenerating.GetTetromino();
         _grid = _cE.Grid;
     }
@@ -45,9 +43,6 @@ public class TetrominoPlacement : MonoBehaviour{
             float j = child.localPosition.y;
             float k = child.localPosition.z;
             
-            Debug.Log(gridSize+" "+ i + "," + j + "," + k);
-            Debug.Log(x + "," + y + "," + z);
-            
             if (((int)(x + i) < 0 || (int)(x + i) >= gridSize) ||
                 ((int)(y + j) < 0 || (int)(y + j) >= gridSize) ||
                 ((int)(z + k) < 0 || (int)(z + k) >= gridSize)){
@@ -71,7 +66,6 @@ public class TetrominoPlacement : MonoBehaviour{
         int z = (int)localLocation.z;
 
 
-        Debug.Log(tetromino.Blocks.Length);
         bool isCovering = false;
         foreach (Transform child in tetromino.Blocks){
             // if any part of the tetromino is covering any other block
@@ -196,7 +190,6 @@ public class TetrominoPlacement : MonoBehaviour{
     /// Method <c>OnTetrominoPlace</c> on "Place" button click saves current tetromino on its current location.
     /// </summary>=
     public void OnTetrominoPlace(){
-        Debug.Log(gameObject.name + " " + gameObject.transform.parent.name);
         Tetromino tetromino = _tGenerating.GetTetromino();
         Location localLocation = _tGenerating.localLocation;
         
