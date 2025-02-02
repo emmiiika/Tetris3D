@@ -12,6 +12,7 @@ public class TetrominoPlacement : MonoBehaviour{
     private TetrominoGenerating _tGenerating;
     private Cube[,,,] _grid;
     private Tetromino _tetromino;
+    private ScoreCounter _scoreCounter;
 
     
     public void Start(){
@@ -19,9 +20,11 @@ public class TetrominoPlacement : MonoBehaviour{
         _cE = grid.GetComponent<CreateEnvironment>();
 
         _tGenerating = gameObject.GetComponent<TetrominoGenerating>();
+        _scoreCounter = grid.GetComponent<ScoreCounter>();
         
         _tetromino = _tGenerating.GetTetromino();
         _grid = _cE.Grid;
+        
     }
     
     /// <summary>
@@ -188,7 +191,8 @@ public class TetrominoPlacement : MonoBehaviour{
     }
 
     /// <summary>
-    /// Method <c>OnTetrominoPlace</c> on "Place" button click saves current tetromino on its current location.
+    /// Method <c>OnTetrominoPlace</c> on "Place" button click saves current tetromino on its current
+    /// location and increases <c>ScoreCounter</c> by 4. 
     /// </summary>=
     public void OnTetrominoPlace(){
         // Tetromino tetromino = _tGenerating.GetTetromino();
@@ -196,6 +200,8 @@ public class TetrominoPlacement : MonoBehaviour{
         
         if (CanPlaceTetromino(_grid, _tetromino, localLocation)){
             SaveTetrominoPosition(_grid, _tetromino, localLocation);
+            _scoreCounter.IncreaseScore(4);
+            
             _tGenerating.DeleteTetromino();
             _tetromino = _tGenerating.GetTetromino();
             ShowTetrominoPreview(_grid, _tetromino, _tGenerating.localLocation);

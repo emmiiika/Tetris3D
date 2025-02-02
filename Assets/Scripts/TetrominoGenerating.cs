@@ -31,7 +31,7 @@ public class TetrominoGenerating : MonoBehaviour
             _chosenBlock = RandomTetromino();
             localLocation = new Location(0, 0, 0);
         }
-        blockName.text = _chosenBlock.Name; // change the shown block name
+        blockName.text = _chosenBlock.Name.Substring(0, 5) + ": " + _chosenBlock.Name.Substring(5); // change the shown block name
 
         return _chosenBlock;
     }

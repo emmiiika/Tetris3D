@@ -10,6 +10,7 @@ public class Main : MonoBehaviour{
     // private TetrominoPlacement _tP;
 
     private Cube[,,,] _grid;
+    private ScoreCounter _scoreCounter;
     
     
     public GameObject cubePrefab;
@@ -21,6 +22,9 @@ public class Main : MonoBehaviour{
         _cE = gameObject.AddComponent<CreateEnvironment>();
         _cE.Init(cubePrefab, transparentMaterial, gridSize);
         _grid = _cE.Grid;
+        
+        _scoreCounter = gameObject.GetComponent<ScoreCounter>();
+        _scoreCounter.InitScoreCounter();
         
         GameObject tetromino = gameObject.transform.parent.Find("Tetromino").gameObject;
     }
