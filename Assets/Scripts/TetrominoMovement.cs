@@ -4,6 +4,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/// <summary>
+/// Class <c>TetrominoMovement</c> moves the active tetromino on button actions.
+/// </summary>
 public class TetrominoMovement : MonoBehaviour{
     
     private CreateEnvironment _cE;
@@ -26,6 +29,9 @@ public class TetrominoMovement : MonoBehaviour{
         _parentWrapper = gameObject.transform.parent;
     }
 
+    /// <summary>
+    /// Method <c>getBasicInformation</c> gets active tetromino and its location in cube-grid.
+    /// </summary>\
     private Tuple<Tetromino, Location> getBasicInformation(){
         _grid = _cE.Grid;
         Tetromino tetromino = _tGenerating.GetTetromino();
@@ -34,6 +40,9 @@ public class TetrominoMovement : MonoBehaviour{
         return new Tuple<Tetromino, Location>(tetromino, localLocation);
     }
     
+    /// <summary>
+    /// Method <c>onMoveLeft</c> moves the tetromino to the left based on the faced face of the cube-grid on button action.
+    /// </summary>
     public void onMoveLeft(){
         Tuple<Tetromino, Location> basicInformation = getBasicInformation();
         Tetromino tetromino = basicInformation.Item1;
@@ -51,6 +60,9 @@ public class TetrominoMovement : MonoBehaviour{
         }
     }
 
+    /// <summary>
+    /// Method <c>onMoveRight</c> moves the tetromino to the right based on the faced face of the cube-grid on button action.
+    /// </summary>
     public void onMoveRight(){
         Tuple<Tetromino, Location> basicInformation = getBasicInformation();
         Tetromino tetromino = basicInformation.Item1;
@@ -68,6 +80,9 @@ public class TetrominoMovement : MonoBehaviour{
         }
     }
 
+    /// <summary>
+    /// Method <c>onMoveUp</c> moves the tetromino upward based on the faced face of the cube-grid on button action.
+    /// </summary>
     public void onMoveUp(){
         Tuple<Tetromino, Location> basicInformation = getBasicInformation();
         Tetromino tetromino = basicInformation.Item1;
@@ -81,6 +96,9 @@ public class TetrominoMovement : MonoBehaviour{
         }
     }
 
+    /// <summary>
+    /// Method <c>onMoveDown</c> moves the tetromino downward based on the faced face of the cube-grid on button action.
+    /// </summary>
     public void onMoveDown(){ 
         Tuple<Tetromino, Location> basicInformation = getBasicInformation();
         Tetromino tetromino = basicInformation.Item1;

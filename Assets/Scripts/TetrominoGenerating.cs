@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Class <c>GenerateBlock</c> generates a random tetromino.
+/// Class <c>TetrominoGenerating</c> generates a random tetromino.
 /// </summary>
 public class TetrominoGenerating : MonoBehaviour
 {

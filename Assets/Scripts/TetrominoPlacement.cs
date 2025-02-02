@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Class <c>TetrominoPlacement</c> .
+/// Class <c>TetrominoPlacement</c> holds active tetromino position.
 /// </summary>
 public class TetrominoPlacement : MonoBehaviour{
     
@@ -11,6 +11,7 @@ public class TetrominoPlacement : MonoBehaviour{
     private CreateEnvironment _cE;
     private TetrominoGenerating _tGenerating;
     private Cube[,,,] _grid;
+    private Tetromino _tetromino;
 
     
     public void Start(){
@@ -19,7 +20,7 @@ public class TetrominoPlacement : MonoBehaviour{
 
         _tGenerating = gameObject.GetComponent<TetrominoGenerating>();
         
-        Tetromino tetromino = _tGenerating.GetTetromino();
+        _tetromino = _tGenerating.GetTetromino();
         _grid = _cE.Grid;
     }
     
@@ -38,10 +39,10 @@ public class TetrominoPlacement : MonoBehaviour{
 
         bool isInside = true;
         // find out if every part of the tetromino is inside the cube-grid
-        foreach (Transform child in tetromino.Blocks){
-            float i = child.localPosition.x;
-            float j = child.localPosition.y;
-            float k = child.localPosition.z;
+        for (int _ = 0; _ < tetromino.BlockPositions.Length; _++){
+            float i = tetromino.BlockPositions[_].x;
+            float j = tetromino.BlockPositions[_].y;
+            float k = tetromino.BlockPositions[_].z;
             
             if (((int)(x + i) < 0 || (int)(x + i) >= gridSize) ||
                 ((int)(y + j) < 0 || (int)(y + j) >= gridSize) ||
@@ -67,11 +68,11 @@ public class TetrominoPlacement : MonoBehaviour{
 
 
         bool isCovering = false;
-        foreach (Transform child in tetromino.Blocks){
+        for (int _ = 0; _ < tetromino.BlockPositions.Length; _++){
             // if any part of the tetromino is covering any other block
-            float i = child.localPosition.x;
-            float j = child.localPosition.y;
-            float k = child.localPosition.z;
+            float i = tetromino.BlockPositions[_].x;
+            float j = tetromino.BlockPositions[_].y;
+            float k = tetromino.BlockPositions[_].z;
 
             if (grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].IsOccupied()){
                 isCovering = true;
@@ -111,14 +112,16 @@ public class TetrominoPlacement : MonoBehaviour{
         int z = (int)localLocation.z;
         
         Renderer renderer;
-        foreach (Transform child in tetromino.Blocks){
+        
+        for (int _ = 0; _ < tetromino.BlockPositions.Length; _++){
             // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
+            Transform child = tetromino.Blocks[_];
             renderer = child.GetComponent<Renderer>();
             Material blockMaterial = renderer.sharedMaterial;
 
-            float i = child.localPosition.x;
-            float j = child.localPosition.y;
-            float k = child.localPosition.z;
+            float i = tetromino.BlockPositions[_].x;
+            float j = tetromino.BlockPositions[_].y;
+            float k = tetromino.BlockPositions[_].z;
 
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
@@ -143,17 +146,18 @@ public class TetrominoPlacement : MonoBehaviour{
         }
         
         Renderer renderer;
-        foreach (Transform child in tetromino.Blocks){
+        for (int _ = 0; _ < tetromino.BlockPositions.Length; _++){
             // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
+            Transform child = tetromino.Blocks[_];
             renderer = child.GetComponent<Renderer>();
 
             if (material == null){
                 material = renderer.sharedMaterial;
             }
 
-            float i = child.localPosition.x;
-            float j = child.localPosition.y;
-            float k = child.localPosition.z;
+            float i = tetromino.BlockPositions[_].x;
+            float j = tetromino.BlockPositions[_].y;
+            float k = tetromino.BlockPositions[_].z;
             
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(material);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(true);
@@ -171,15 +175,12 @@ public class TetrominoPlacement : MonoBehaviour{
         int y = (int)localLocation.y;
         int z = (int)localLocation.z;
 
-        Renderer renderer;
-        foreach (Transform child in tetromino.Blocks){
+        for (int _ = 0; _ < tetromino.BlockPositions.Length; _++){
             // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
-            renderer = child.GetComponent<Renderer>();
-            Material blockMaterial = renderer.sharedMaterial;
 
-            float i = child.localPosition.x;
-            float j = child.localPosition.y;
-            float k = child.localPosition.z;
+            float i = tetromino.BlockPositions[_].x;
+            float j = tetromino.BlockPositions[_].y;
+            float k = tetromino.BlockPositions[_].z;
 
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(false);
@@ -190,14 +191,14 @@ public class TetrominoPlacement : MonoBehaviour{
     /// Method <c>OnTetrominoPlace</c> on "Place" button click saves current tetromino on its current location.
     /// </summary>=
     public void OnTetrominoPlace(){
-        Tetromino tetromino = _tGenerating.GetTetromino();
+        // Tetromino tetromino = _tGenerating.GetTetromino();
         Location localLocation = _tGenerating.localLocation;
         
-        if (CanPlaceTetromino(_grid, tetromino, localLocation)){
-            SaveTetrominoPosition(_grid, tetromino, localLocation);
+        if (CanPlaceTetromino(_grid, _tetromino, localLocation)){
+            SaveTetrominoPosition(_grid, _tetromino, localLocation);
             _tGenerating.DeleteTetromino();
-            tetromino = _tGenerating.GetTetromino();
-            ShowTetrominoPreview(_grid, tetromino, _tGenerating.localLocation);
+            _tetromino = _tGenerating.GetTetromino();
+            ShowTetrominoPreview(_grid, _tetromino, _tGenerating.localLocation);
         }
     }
 }

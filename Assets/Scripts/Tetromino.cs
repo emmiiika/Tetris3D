@@ -8,6 +8,7 @@ public class Tetromino{
     public GameObject Prefab;
     public Material Material;
     public Transform[] Blocks;
+    public Vector3[] BlockPositions; // local position of tetromino's blocks with respect to rotation of the tetromino
 
     private Renderer _renderer;
 
@@ -35,10 +36,11 @@ public class Tetromino{
 
         this.Prefab = prefab;
         this.Blocks = new Transform[4];
+        this.BlockPositions = new Vector3[4];
         int i = 0;
         foreach (Transform block in prefab.transform){
-            Blocks[i++] = block;
+            Blocks[i] = block;
+            BlockPositions[i++] = block.localPosition;
         }
     }
-
 }

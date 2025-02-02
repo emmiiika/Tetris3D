@@ -340,7 +340,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463266}
         m_TargetAssemblyTypeName: TetrominoRotation, Assembly-CSharp
-        m_MethodName: onRotateUp
+        m_MethodName: OnRotateUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2092,7 +2092,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463266}
         m_TargetAssemblyTypeName: TetrominoRotation, Assembly-CSharp
-        m_MethodName: onRotateLeft
+        m_MethodName: OnRotateLeft
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2326,7 +2326,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463266}
         m_TargetAssemblyTypeName: TetrominoRotation, Assembly-CSharp
-        m_MethodName: onRotateDown
+        m_MethodName: OnRotateDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2997,7 +2997,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463266}
         m_TargetAssemblyTypeName: TetrominoRotation, Assembly-CSharp
-        m_MethodName: onRotateRight
+        m_MethodName: OnRotateRight
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
