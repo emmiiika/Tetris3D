@@ -473,7 +473,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463269}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: onMoveLeft
+        m_MethodName: OnMoveLeft
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1157,7 +1157,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463269}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: onMoveRight
+        m_MethodName: OnMoveRight
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2878,7 +2878,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463269}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: onMoveDown
+        m_MethodName: OnMoveDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3385,7 +3385,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877463269}
         m_TargetAssemblyTypeName: Movement, Assembly-CSharp
-        m_MethodName: onMoveUp
+        m_MethodName: OnMoveUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

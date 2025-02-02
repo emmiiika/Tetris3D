@@ -35,7 +35,7 @@ public class TetrominoRotation : MonoBehaviour{
     private Tuple<Tetromino, Location> GetBasicInformation(){
         _grid = _cE.Grid;
         Tetromino tetromino = _tGenerating.GetTetromino();
-        Location localLocation = _tGenerating.localLocation;
+        Location localLocation = _tGenerating.LocalLocation;
         
         return new Tuple<Tetromino, Location>(tetromino, localLocation);
     }
@@ -165,7 +165,7 @@ public class TetrominoRotation : MonoBehaviour{
     /// </summary>
     /// <param name="blockPosition"> the vector to be rotated.</param>
     /// <param name="isUpward">if the rotation is upwards or not.</param>
-    public Vector3 Rotate(Vector3 blockPosition, bool isUpward){
+    private Vector3 Rotate(Vector3 blockPosition, bool isUpward){
         int maxVisibleSide = _cameraPositioning.GetCameraFacingFace(_parentWrapper);
         if (maxVisibleSide == 0){  // z / +-. up / -+. down
             return isUpward ? RotateAroundZAxis(blockPosition, false) : RotateAroundZAxis(blockPosition, true);

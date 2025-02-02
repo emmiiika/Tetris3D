@@ -87,21 +87,17 @@ public class Cube {
     /// <param name="material">new material.</param>
     public void 
         SetMaterial(Material material){
-        // Debug.Log("really setting the new material");
         this.material = material;
         
-        // Debug.Log("going to color blocks: " + cubeObject);
         foreach (Transform child in cubeObject.transform){
-            // Debug.Log("\tColoring block");
             if (child.name == "Cube"){
-                // Debug.Log("it is a cube");
                 child.GetComponent<Renderer>().material = material;
             }
         }
     }
 
     /// <summary>
-    /// Method <c>isOccupied</c> returns if a <c>Cube</c> is "drawn" in the world space.
+    /// Method <c>isOccupied</c> returns if a <c>Cube</c> is filled in.
     /// </summary>
     public bool IsOccupied(){
         return (this.material != transparentMaterial);

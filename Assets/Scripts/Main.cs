@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Analytics;
+﻿using UnityEngine;
 
 public class Main : MonoBehaviour{
     private CreateEnvironment _cE;
-    // private TetrominoGenerating _gT;
-    // private TetrominoPlacement _tP;
 
     private Cube[,,,] _grid;
     private ScoreCounter _scoreCounter;

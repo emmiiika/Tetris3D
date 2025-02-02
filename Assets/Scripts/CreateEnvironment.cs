@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -27,7 +26,6 @@ public class CreateEnvironment : MonoBehaviour
     /// </summary>
     /// <param name="cubePrefab">prefab of a cube.</param>
     /// <param name="transparentMaterial">transparent material.</param>
-    /// <param name="fullyTransparentMaterial">fully transparent material.</param>
     /// <param name="gridSize">size of the cube-grid (preset to 5).</param>
     /// <param name="cubeSize">size of one side of a cube (preset to 0).</param>
     public void Init(GameObject cubePrefab, Material transparentMaterial, int gridSize = 5, float cubeSize = 0){
@@ -53,11 +51,10 @@ public class CreateEnvironment : MonoBehaviour
         _gb = tetrominoWrapper.GetComponent<TetrominoGenerating>();
         _bp = tetrominoWrapper.GetComponent<TetrominoPlacement>();
         
-        Debug.Log("generating");
         GenerateGrid(_cubeSize, _autoIncrement);
         
         Tetromino tetromino = _gb.GetTetromino();
-        Location tLocalLocation = _gb.localLocation;
+        Location tLocalLocation = _gb.LocalLocation;
         _bp.ShowTetrominoPreview(Grid, tetromino, tLocalLocation);
     }
     
@@ -66,7 +63,7 @@ public class CreateEnvironment : MonoBehaviour
     /// </summary>
     /// <param name="cubeSize">size of one side of a cube.</param>
     /// <param name="autoIncrement">id counter.</param>
-    public void GenerateGrid(float cubeSize, AutoIncrement autoIncrement){
+    private void GenerateGrid(float cubeSize, AutoIncrement autoIncrement){
         
         _cubes = new List<Cube>();
         

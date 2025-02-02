@@ -4,20 +4,20 @@
 /// Class <c>Location</c> saves coordinates <c>x, y, z</c> (floats).
 /// </summary>
 public class Location{
-    public float x;
-    public float y;
-    public float z;
+    public float X;
+    public float Y;
+    public float Z;
     
     public Location(float x, float y, float z){
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.X = x;
+        this.Y = y;
+        this.Z = z;
     }
 
     /// <summary>
     /// Method <c>toVector3</c> converts <c>Location</c>'s float coordinates into <c>Vector3</c>.
     /// </summary>
     public Vector3 ToVector3(){
-        return new Vector3(this.x, this.y, this.z);
+        return new Vector3(this.X, this.Y, this.Z);
     }
 }

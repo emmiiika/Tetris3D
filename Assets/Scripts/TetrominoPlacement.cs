@@ -34,9 +34,9 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
     public bool IsTetrominoInsideCube(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        int x = (int)localLocation.x;
-        int y = (int)localLocation.y;
-        int z = (int)localLocation.z;
+        int x = (int)localLocation.X;
+        int y = (int)localLocation.Y;
+        int z = (int)localLocation.Z;
 
         int gridSize = grid.GetLength(0);
 
@@ -64,10 +64,10 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public bool IsCoveringOtherTetrominos(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        int x = (int)localLocation.x;
-        int y = (int)localLocation.y;
-        int z = (int)localLocation.z;
+    private bool IsCoveringOtherTetrominos(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+        int x = (int)localLocation.X;
+        int y = (int)localLocation.Y;
+        int z = (int)localLocation.Z;
 
 
         bool isCovering = false;
@@ -91,7 +91,7 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public bool CanPlaceTetromino(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+    private bool CanPlaceTetromino(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
         // the whole tetromino is inside the cube-grid
         bool isInside = IsTetrominoInsideCube(grid, tetromino, localLocation);
         if (isInside){
@@ -109,10 +109,10 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="grid">the cube-grid.</param>
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
-    public void SaveTetrominoPosition(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        int x = (int)localLocation.x;
-        int y = (int)localLocation.y;
-        int z = (int)localLocation.z;
+    private void SaveTetrominoPosition(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
+        int x = (int)localLocation.X;
+        int y = (int)localLocation.Y;
+        int z = (int)localLocation.Z;
         
         Renderer renderer;
         
@@ -139,9 +139,9 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
     public void ShowTetrominoPreview(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        int x = (int)localLocation.x;
-        int y = (int)localLocation.y;
-        int z = (int)localLocation.z;
+        int x = (int)localLocation.X;
+        int y = (int)localLocation.Y;
+        int z = (int)localLocation.Z;
         
         Material material = null;
         if (IsCoveringOtherTetrominos(grid, tetromino, localLocation)){
@@ -174,9 +174,9 @@ public class TetrominoPlacement : MonoBehaviour{
     /// <param name="tetromino">one tetromino.</param>
     /// <param name="localLocation">location of the first tetromino block in the cube-grid.</param>
     public void HideTetrominoPreview(Cube[,,,] grid, Tetromino tetromino, Location localLocation){
-        int x = (int)localLocation.x;
-        int y = (int)localLocation.y;
-        int z = (int)localLocation.z;
+        int x = (int)localLocation.X;
+        int y = (int)localLocation.Y;
+        int z = (int)localLocation.Z;
 
         for (int _ = 0; _ < tetromino.BlockPositions.Length; _++){
             // color relevant cube-grid's cubes with tetromino's color based on each tetromino's block position
@@ -196,7 +196,7 @@ public class TetrominoPlacement : MonoBehaviour{
     /// </summary>=
     public void OnTetrominoPlace(){
         // Tetromino tetromino = _tGenerating.GetTetromino();
-        Location localLocation = _tGenerating.localLocation;
+        Location localLocation = _tGenerating.LocalLocation;
         
         if (CanPlaceTetromino(_grid, _tetromino, localLocation)){
             SaveTetrominoPosition(_grid, _tetromino, localLocation);
@@ -204,7 +204,7 @@ public class TetrominoPlacement : MonoBehaviour{
             
             _tGenerating.DeleteTetromino();
             _tetromino = _tGenerating.GetTetromino();
-            ShowTetrominoPreview(_grid, _tetromino, _tGenerating.localLocation);
+            ShowTetrominoPreview(_grid, _tetromino, _tGenerating.LocalLocation);
         }
     }
 }

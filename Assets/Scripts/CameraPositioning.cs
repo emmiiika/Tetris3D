@@ -1,11 +1,10 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Method <c>CameraPositioning</c> holds the game login related to the camera position.
 /// </summary>
 public class CameraPositioning{
-    private Camera camera = Camera.main;
+    private Camera _camera = Camera.main;
     
     private Vector3[] _facesNormals = new []{
         // new Vector3(0,1,0), // up face
@@ -31,7 +30,7 @@ public class CameraPositioning{
     /// <param name="localSpaceTransform">the wrapper Transform of the cube-grid.</param>
     public int GetCameraFacingFace(Transform localSpaceTransform){
         // left (0), to me (1), from me (2), right (3)
-        Vector3 cameraNormal = camera.transform.forward;
+        Vector3 cameraNormal = _camera.transform.forward;
         Vector3 cameraLocalNormal = localSpaceTransform.InverseTransformDirection(cameraNormal);
 
         int mostVisibleSide = -1;
