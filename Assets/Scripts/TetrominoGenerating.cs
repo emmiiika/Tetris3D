@@ -14,12 +14,21 @@ public class TetrominoGenerating : MonoBehaviour
 
     private Tetromino _chosenBlock; // generated tetromino
 
+    public List<GameObject> blocksBucket; // difference between random generating blocks cannot be grater than 1 
     /// <summary>
     /// Method <c>ChooseBlock</c> returns a random tetromino.
     /// </summary>
     private Tetromino RandomTetromino(){
-        int index = Random.Range(0,blocks.Count);
-        return new Tetromino(blocks[index]);
+        //int index = Random.Range(0,blocks.Count);
+        //return new Tetromino(blocks[index]);
+        //vzdy sa vystriedaju vsetky 4 bloky
+        if (blocksBucket.Count == 0) blocksBucket = new List<GameObject>(blocks);
+        int index = Random.Range(0, blocksBucket.Count);
+
+        Tetromino tetromino = new Tetromino(blocksBucket[index]);
+        blocksBucket.RemoveAt(index);
+        return tetromino;
+
     }
 
     /// <summary>
