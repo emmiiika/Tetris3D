@@ -918,8 +918,8 @@ PlayerSettings:
   cloudProjectId: e90c47b0-785c-4a70-937a-4a4212d7e607
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Tetris3D
-  organizationId: 
+  projectName: Kocky 3D tetris
+  organizationId: xl202
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

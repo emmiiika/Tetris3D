@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
 /// Class <c>TetrominoPlacement</c> holds active tetromino position.
@@ -129,9 +132,114 @@ public class TetrominoPlacement : MonoBehaviour{
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
         }
+        CheckForWholeLayers(grid, tetromino, localLocation);
     }
     
+    private void CheckForWholeLayers(Cube[,,,] grid, Tetromino tetromino, Location localLocation) {
+        int gridSizeX = grid.GetLength(0); // length in x dimension
+        int gridSizeY = grid.GetLength(1); // length in y dimension
+        int gridSizeZ = grid.GetLength(2); // length in z dimension
+        
+        List<int> layersX = new List<int>();
+        List<int> layersY = new List<int>();
+        List<int> layersZ = new List<int>();
+
+        for (int x = 0; x < gridSizeX; x++) {
+            bool isFullLayer = true;
+            for (int y = 0; y < gridSizeY; y++) {
+                for (int z = 0; z < gridSizeZ; z++) {
+                    if (grid[x, y, z, 0].material != trasparentMaterial) {
+                        isFullLayer = false;
+                        break;
+                    }
+                }
+                if (!isFullLayer) break;
+            }
+            if (isFullLayer) {
+                Debug.Log("Full layer at x: " + x);
+                layersX.Add(x);
+                //return x;
+            }
+        }
+        for (int y = 0; y < gridSizeY; y++) {
+            bool isFullLayer = true;
+            for (int x = 0; x < gridSizeX; x++) {
+                for (int z = 0; z < gridSizeZ; z++) {
+                    if (grid[x, y, z, 0].material != trasparentMaterial) {
+                        isFullLayer = false;
+                        break;
+                    }
+                }
+                if (!isFullLayer) break;
+            }
+            if (isFullLayer) {
+                Debug.Log("Full layer at y: " + y);
+                layersY.Add(y);
+                //return y;
+            }
+        }
+
+        for (int z = 0; z < gridSizeZ; z++) {
+            bool isFullLayer = true;
+            for (int x = 0; x < gridSizeX; x++) {
+                for (int y = 0; y < gridSizeY; y++) {
+                    if (grid[x, y, z, 0].material != trasparentMaterial) {
+                    isFullLayer = false;
+                    break;
+                    }
+                }
+                if (!isFullLayer) break;
+            }
+            if (isFullLayer) {
+                Debug.Log("Full layer at z: " + z);
+                layersZ.Add(z);
+                //return z;
+            }
+        }
+        //return -1;
+        // Determine which layer list contains the most numbers
+        int maxLayers = Mathf.Max(layersX.Count, layersY.Count, layersZ.Count);
+        _scoreCounter.IncreaseScore(10*(maxLayers^2));
+        if (maxLayers == layersX.Count) {
+            Debug.Log("X layers contain the most numbers: " + layersX.Count);
+            disappear(grid, 'x', layersX);
+        } else if (maxLayers == layersY.Count) {
+            Debug.Log("Y layers contain the most numbers: " + layersY.Count);
+            disappear(grid, 'y', layersX);
+        } else if (maxLayers == layersZ.Count) {
+            Debug.Log("Z layers contain the most numbers: " + layersZ.Count);
+            disappear(grid, 'z', layersX);
+        }
+    }
     
+    private void disappear(Cube[,,,] grid, char direction, List<int> layers) {
+        for (int i = 0; i < layers.Count; i++) {
+            int layer = layers[i];
+            switch (direction) {
+                case 'x':
+                    for (int y = 0; y < grid.GetLength(1); y++) {
+                        for (int z = 0; z < grid.GetLength(2); z++) {
+                            grid[layer, y, z, 0].SetMaterial(trasparentMaterial);
+                        }
+                    }
+                    break;
+                case 'y':
+                    for (int x = 0; x < grid.GetLength(0); x++) {
+                        for (int z = 0; z < grid.GetLength(2); z++) {
+                            grid[x, layer, z, 0].SetMaterial(trasparentMaterial);
+                        }
+                    }
+                    break;
+                case 'z':
+                    for (int x = 0; x < grid.GetLength(0); x++) {
+                        for (int y = 0; y < grid.GetLength(1); y++) {
+                            grid[x, y, layer, 0].SetMaterial(trasparentMaterial);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
     /// <summary>
     /// Method <c>ShowTetrominoPreview</c> show a preview of a new possible tetromino on <c>localLocation</c>.
     /// </summary>
