@@ -5,12 +5,12 @@
 
 ## O čom to je?
 
-Tetris 3D je 3D verzia hry Tetris s využitím rozšírenej reality.
+Tetris3D je 3D verzia hry Tetris s využitím rozšírenej reality.
 Pravidlá sú podobné ako v Tetris-e. Generujú sa tetrominá (tieto 
 však nepadajú zhora, ale sa objavujú vždy na jednom rohu kockovej 
 mriežky). Následne treba tieto tetrominá ukladať do 3D mriežky a 
 vypĺňať vrstvy -- rezy kocky v smere jej rovín $xy$, $xz$ a $yz$, 
-kde $x$, $y$ a $z$ su osi. 
+kde $x$, $y$ a $z$ sú osi. 
 
 
 ## Ako to vyzerá?
@@ -42,8 +42,8 @@ verzii Tetrisu máme 4 typy, a to:
 
 ## Ovládanie
 
-Tetrominá treba posúvať a otáčať. Na to aby sa to dalo robiť hráč 
-využíva tlačítka a fyzický pohyb okolo markera -- kokrétne, smer 
+Tetrominá treba posúvať a otáčať. Na to aby sa to dalo robiť, hráč 
+využíva tlačítka a fyzický pohyb okolo markera -- konkrétne, smer 
 pohľadu na zobrazenú mriežku. 
 
 
@@ -71,11 +71,11 @@ len v dvoch smeroch a pre rotáciu po tretej osi sa musí hráč
 fyzicky hýbať okolo markera. 
 
 Je dobré poznamenať, že sa tetrominá rotujú okolo svojho "prvého" 
-bloku, t.j. blok, ktorý máme v prefabe zadaný ako prvý. Taktiež, 
-ak tetromino nemá do daného smeru na vykonanie rotácie dostatok 
-miesta, tak sa neotočí. Čiže, ak sa zdá, že rotácie nefungujú, 
-tetrmino má len málo miesta na otočenie a treba ho poposúvať do 
-správnych smerov, aby sa vytvorilo miesto.
+bloku, t.j. blok, ktorý máme v prefabe daného tetromina zadaný 
+ako prvý. Taktiež, ak tetromino nemá do daného smeru na vykonanie 
+rotácie dostatok miesta, tak sa neotočí. Čiže, ak sa zdá, že rotácie 
+nefungujú, tetromino má len málo miesta na otočenie a treba ho poposúvať 
+do správnych smerov, aby sa vytvorilo miesto.
 
 ![Tlačítka na rotáciu do strán](Static/rotateLR.png)
 ![Tlačítka na pohyb hore, dolu](Static/rotateUD.png)
@@ -91,7 +91,8 @@ tetromina a hneď na to sa vygeneruje nové tetromino.
 
 
 > _V prípade, že sa tetromino nedá umiestniť, posunúť do nejakého smeru 
-alebo zrotovať do nejakého smeru, tak tlačítka prebliknú na červeno._ 
+alebo zrotovať do nejakého smeru, tak tlačítka prebliknú na červeno. 
+Naopak, pri úspešnej akcii preblikne na zeleno._ 
 
 
 ## Požiadavky
