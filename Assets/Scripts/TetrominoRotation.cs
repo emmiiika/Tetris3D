@@ -3,6 +3,8 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System.Collections;
+
 
 /// <summary>
 /// Class <c>TetrominoRotation</c> rotates the active tetromino on button actions.
@@ -130,6 +132,17 @@ public class TetrominoRotation : MonoBehaviour{
         }
         else{
             tetromino.BlockPositions = oldBlockPositions;
+            Debug.Log("Cannot rotate tetromino left.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("RotateLeftButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.red;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         }
     } 
     
@@ -157,6 +170,17 @@ public class TetrominoRotation : MonoBehaviour{
         }
         else{
             tetromino.BlockPositions = oldBlockPositions;
+            Debug.Log("Cannot rotate tetromino right.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("RotateRightButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.red;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         }
     }
     
@@ -207,6 +231,17 @@ public class TetrominoRotation : MonoBehaviour{
         }
         else{
             tetromino.BlockPositions = oldBlockPositions;
+            Debug.Log("Cannot rotate tetromino up.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("RotateUpButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.red;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         }
     }
 
@@ -234,6 +269,22 @@ public class TetrominoRotation : MonoBehaviour{
         }
         else{
             tetromino.BlockPositions = oldBlockPositions;
+            Debug.Log("Cannot rotate tetromino down.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("RotateDownButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.red;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         }
+    }
+    // Coroutine na oneskorenie zmeny farby tlačidla
+    private IEnumerator ResetButtonColor(UnityEngine.UI.Image buttonImage, Color originalColor, float delay) {
+        yield return new WaitForSeconds(delay);
+        buttonImage.color = originalColor;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.Rendering;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -139,6 +140,7 @@ public class TetrominoPlacement : MonoBehaviour{
         int gridSizeX = grid.GetLength(0); // length in x dimension
         int gridSizeY = grid.GetLength(1); // length in y dimension
         int gridSizeZ = grid.GetLength(2); // length in z dimension
+        Debug.Log($"Grid Size - X: {gridSizeX}, Y: {gridSizeY}, Z: {gridSizeZ}");
         
         List<int> layersX = new List<int>();
         List<int> layersY = new List<int>();
@@ -148,8 +150,9 @@ public class TetrominoPlacement : MonoBehaviour{
             bool isFullLayer = true;
             for (int y = 0; y < gridSizeY; y++) {
                 for (int z = 0; z < gridSizeZ; z++) {
-                    if (grid[x, y, z, 0].material != trasparentMaterial) {
+                    if (!grid[x, y, z, 0].IsOccupied()) {
                         isFullLayer = false;
+                        Debug.Log($"Not full layer at x ({x},{y},{z}): " + x);
                         break;
                     }
                 }
@@ -165,8 +168,9 @@ public class TetrominoPlacement : MonoBehaviour{
             bool isFullLayer = true;
             for (int x = 0; x < gridSizeX; x++) {
                 for (int z = 0; z < gridSizeZ; z++) {
-                    if (grid[x, y, z, 0].material != trasparentMaterial) {
+                    if (!grid[x, y, z, 0].IsOccupied()) {
                         isFullLayer = false;
+                        Debug.Log($"Not full layer at y ({x},{y},{z}): " + y);
                         break;
                     }
                 }
@@ -183,9 +187,10 @@ public class TetrominoPlacement : MonoBehaviour{
             bool isFullLayer = true;
             for (int x = 0; x < gridSizeX; x++) {
                 for (int y = 0; y < gridSizeY; y++) {
-                    if (grid[x, y, z, 0].material != trasparentMaterial) {
-                    isFullLayer = false;
-                    break;
+                    if (!grid[x, y, z, 0].IsOccupied()) {
+                        isFullLayer = false;
+                        Debug.Log($"Not full layer at z ({x},{y},{z}): " + z);
+                        break;
                     }
                 }
                 if (!isFullLayer) break;
@@ -222,6 +227,7 @@ public class TetrominoPlacement : MonoBehaviour{
                             grid[layer, y, z, 0].SetMaterial(trasparentMaterial);
                         }
                     }
+                    Debug.Log("Disappearing layer x: " + layer);
                     break;
                 case 'y':
                     for (int x = 0; x < grid.GetLength(0); x++) {
@@ -229,6 +235,7 @@ public class TetrominoPlacement : MonoBehaviour{
                             grid[x, layer, z, 0].SetMaterial(trasparentMaterial);
                         }
                     }
+                    Debug.Log("Disappearing layer y: " + layer);
                     break;
                 case 'z':
                     for (int x = 0; x < grid.GetLength(0); x++) {
@@ -236,6 +243,7 @@ public class TetrominoPlacement : MonoBehaviour{
                             grid[x, y, layer, 0].SetMaterial(trasparentMaterial);
                         }
                     }
+                    Debug.Log("Disappearing layer z: " + layer);
                     break;
             }
         }
@@ -313,6 +321,25 @@ public class TetrominoPlacement : MonoBehaviour{
             _tGenerating.DeleteTetromino();
             _tetromino = _tGenerating.GetTetromino();
             ShowTetrominoPreview(_grid, _tetromino, _tGenerating.LocalLocation);
+        } else {
+        Debug.Log("Cannot place tetromino here.");
+        // Highlight the "Place" button in pink for 0.5 seconds
+        GameObject placeButton = GameObject.Find("PlaceButton");
+        RectTransform rectTransform = placeButton.GetComponent<RectTransform>();
+        UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+        Color originalColor = buttonImage.color;
+        buttonImage.color = Color.red;
+
+        // Spusti Coroutine na reset farby po 0.5 sekundy
+        StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         }
     }
+
+    // Coroutine na oneskorenie zmeny farby tlačidla
+    private IEnumerator ResetButtonColor(UnityEngine.UI.Image buttonImage, Color originalColor, float delay) {
+        yield return new WaitForSeconds(delay);
+        buttonImage.color = originalColor;
+    }
+    
 }
