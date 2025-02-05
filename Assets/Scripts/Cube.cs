@@ -102,4 +102,9 @@ public class Cube {
     public bool IsOccupied(){
         return (this.material != transparentMaterial);
     }
+
+    public void SetNotOccupied(){
+        this.material = transparentMaterial;
+        SetMaterial(transparentMaterial);
+    }
 }

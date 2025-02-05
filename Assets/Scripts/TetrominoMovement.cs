@@ -55,6 +55,17 @@ public class TetrominoMovement : MonoBehaviour{
             _tPlacement.HideTetrominoPreview(_grid, tetromino, localLocation);
             _tPlacement.ShowTetrominoPreview(_grid, tetromino, newLocalLocation);
             _tGenerating.LocalLocation = newLocalLocation;
+            Debug.Log("Tetromino moved left.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("MoveLeftButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.green;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         } else {
             Debug.Log("Cannot move tetromino left.");
             // Highlight the "Place" button in pink for 0.5 seconds
@@ -87,6 +98,18 @@ public class TetrominoMovement : MonoBehaviour{
             _tPlacement.HideTetrominoPreview(_grid, tetromino, localLocation);
             _tPlacement.ShowTetrominoPreview(_grid, tetromino, newLocalLocation);
             _tGenerating.LocalLocation = newLocalLocation;
+
+            Debug.Log("Tetromino moved right.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("MoveRightButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.green;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         } else {
             Debug.Log("Cannot move tetromino right.");
             // Highlight the "Place" button in pink for 0.5 seconds
@@ -115,6 +138,18 @@ public class TetrominoMovement : MonoBehaviour{
             _tPlacement.HideTetrominoPreview(_grid, tetromino, localLocation);
             _tPlacement.ShowTetrominoPreview(_grid, tetromino, newLocalLocation);
             _tGenerating.LocalLocation = newLocalLocation;
+
+            Debug.Log("Tetromino moved up.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("MoveUpButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.green;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         } else {
             Debug.Log("Cannot move tetromino up.");
             // Highlight the "Place" button in pink for 0.5 seconds
@@ -143,6 +178,18 @@ public class TetrominoMovement : MonoBehaviour{
             _tPlacement.HideTetrominoPreview(_grid, tetromino, localLocation);
             _tPlacement.ShowTetrominoPreview(_grid, tetromino, newLocalLocation);
             _tGenerating.LocalLocation = newLocalLocation;
+
+            Debug.Log("Tetromino moved down.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject moveButton = GameObject.Find("MoveDownButton");
+            RectTransform rectTransform = moveButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.green;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
         } else {
             Debug.Log("Cannot move tetromino down.");
             // Highlight the "Place" button in pink for 0.5 seconds

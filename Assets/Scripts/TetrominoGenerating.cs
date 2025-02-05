@@ -14,19 +14,43 @@ public class TetrominoGenerating : MonoBehaviour
 
     private Tetromino _chosenBlock; // generated tetromino
 
-    public List<GameObject> blocksBucket; // difference between random generating blocks cannot be grater than 1 
-    /// <summary>
+    public List<GameObject> blocksBucket = new List<GameObject>(); // difference between random generating blocks cannot be grater than 1 
+    
+    private Tetromino nextBlock = null;/// <summary>
     /// Method <c>ChooseBlock</c> returns a random tetromino.
     /// </summary>
+
+    private void Shuffle<T>(IList<T> list) {
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]); // Swap prvkov
+        }
+    }
     private Tetromino RandomTetromino(){
         //int index = Random.Range(0,blocks.Count);
         //return new Tetromino(blocks[index]);
         //vzdy sa vystriedaju vsetky 4 bloky
-        if (blocksBucket.Count == 0) blocksBucket = new List<GameObject>(blocks);
-        int index = Random.Range(0, blocksBucket.Count);
+        if (blocksBucket.Count == 0) {
+            blocksBucket = new List<GameObject>(blocks);
+            //vygeneruje sa bucket, zamieša sa
+            Shuffle(blocksBucket);
+        }
+        else if (blocksBucket.Count == 1) {
+            //ak obsahuje bucket len 1 prvok, tak sa vygeneruje nový bucket a spoja sa
+            List<GameObject> tmpBlocksBucket = new List<GameObject>(blocks);
+            Shuffle(tmpBlocksBucket);
+            blocksBucket.AddRange(tmpBlocksBucket);
+        }
+        
 
-        Tetromino tetromino = new Tetromino(blocksBucket[index]);
-        blocksBucket.RemoveAt(index);
+        Tetromino tetromino = new Tetromino(blocksBucket[0]);
+        blocksBucket.RemoveAt(0);
+        //TODO: zobraziť next block blocksBucket[0]
+        nextBlock = new Tetromino(blocksBucket[0]);
         return tetromino;
 
     }

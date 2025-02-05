@@ -204,7 +204,8 @@ public class TetrominoPlacement : MonoBehaviour{
         //return -1;
         // Determine which layer list contains the most numbers
         int maxLayers = Mathf.Max(layersX.Count, layersY.Count, layersZ.Count);
-        _scoreCounter.IncreaseScore(10*(maxLayers^2));
+        _scoreCounter.IncreaseScore(10*(maxLayers*maxLayers));
+        Debug.Log("Bonus score added:" + 10*(maxLayers*maxLayers));
         if (maxLayers == layersX.Count) {
             Debug.Log("X layers contain the most numbers: " + layersX.Count);
             disappear(grid, 'x', layersX);
@@ -224,7 +225,8 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'x':
                     for (int y = 0; y < grid.GetLength(1); y++) {
                         for (int z = 0; z < grid.GetLength(2); z++) {
-                            grid[layer, y, z, 0].SetMaterial(trasparentMaterial);
+                            //grid[layer, y, z, 0].SetMaterial(trasparentMaterial);
+                            grid[layer, y, z, 0].SetNotOccupied();
                         }
                     }
                     Debug.Log("Disappearing layer x: " + layer);
@@ -232,7 +234,8 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'y':
                     for (int x = 0; x < grid.GetLength(0); x++) {
                         for (int z = 0; z < grid.GetLength(2); z++) {
-                            grid[x, layer, z, 0].SetMaterial(trasparentMaterial);
+                            //grid[x, layer, z, 0].SetMaterial(trasparentMaterial);
+                            grid[x, layer, z, 0].SetNotOccupied();
                         }
                     }
                     Debug.Log("Disappearing layer y: " + layer);
@@ -240,7 +243,8 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'z':
                     for (int x = 0; x < grid.GetLength(0); x++) {
                         for (int y = 0; y < grid.GetLength(1); y++) {
-                            grid[x, y, layer, 0].SetMaterial(trasparentMaterial);
+                            //grid[x, y, layer, 0].SetMaterial(trasparentMaterial);
+                            grid[x, y, layer, 0].SetNotOccupied();
                         }
                     }
                     Debug.Log("Disappearing layer z: " + layer);
@@ -320,6 +324,19 @@ public class TetrominoPlacement : MonoBehaviour{
             
             _tGenerating.DeleteTetromino();
             _tetromino = _tGenerating.GetTetromino();
+
+            Debug.Log("Tetromino successfully placed.");
+            // Highlight the "Place" button in pink for 0.5 seconds
+            GameObject placeButton = GameObject.Find("PlaceButton");
+            RectTransform rectTransform = placeButton.GetComponent<RectTransform>();
+            UnityEngine.UI.Image buttonImage = rectTransform.GetComponent<UnityEngine.UI.Image>();
+
+            Color originalColor = buttonImage.color;
+            buttonImage.color = Color.green;
+
+            // Spusti Coroutine na reset farby po 0.5 sekundy
+            StartCoroutine(ResetButtonColor(buttonImage, originalColor, 0.1f));
+            
             ShowTetrominoPreview(_grid, _tetromino, _tGenerating.LocalLocation);
         } else {
         Debug.Log("Cannot place tetromino here.");
