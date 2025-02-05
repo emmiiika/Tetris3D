@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
@@ -9,7 +10,7 @@ using UnityEngine.SocialPlatforms.Impl;
 /// </summary>
 public class TetrominoPlacement : MonoBehaviour{
     
-    public Material trasparentMaterial;
+    public Material transparentMaterial;
     public Material wrongPlacementMaterial;
 
     private CreateEnvironment _cE;
@@ -131,7 +132,7 @@ public class TetrominoPlacement : MonoBehaviour{
             float k = tetromino.BlockPositions[_].z;
 
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 0].SetMaterial(blockMaterial);
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(transparentMaterial);
         }
         CheckForWholeLayers(grid, tetromino, localLocation);
     }
@@ -225,7 +226,7 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'x':
                     for (int y = 0; y < grid.GetLength(1); y++) {
                         for (int z = 0; z < grid.GetLength(2); z++) {
-                            //grid[layer, y, z, 0].SetMaterial(trasparentMaterial);
+                            //grid[layer, y, z, 0].SetMaterial(transparentMaterial);
                             grid[layer, y, z, 0].SetNotOccupied();
                         }
                     }
@@ -234,7 +235,7 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'y':
                     for (int x = 0; x < grid.GetLength(0); x++) {
                         for (int z = 0; z < grid.GetLength(2); z++) {
-                            //grid[x, layer, z, 0].SetMaterial(trasparentMaterial);
+                            //grid[x, layer, z, 0].SetMaterial(transparentMaterial);
                             grid[x, layer, z, 0].SetNotOccupied();
                         }
                     }
@@ -243,7 +244,7 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'z':
                     for (int x = 0; x < grid.GetLength(0); x++) {
                         for (int y = 0; y < grid.GetLength(1); y++) {
-                            //grid[x, y, layer, 0].SetMaterial(trasparentMaterial);
+                            //grid[x, y, layer, 0].SetMaterial(transparentMaterial);
                             grid[x, y, layer, 0].SetNotOccupied();
                         }
                     }
@@ -305,7 +306,7 @@ public class TetrominoPlacement : MonoBehaviour{
             float j = tetromino.BlockPositions[_].y;
             float k = tetromino.BlockPositions[_].z;
 
-            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(trasparentMaterial);
+            grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetMaterial(transparentMaterial);
             grid[(int)(x + i), (int)(y + j), (int)(z + k), 1].SetActive(false);
         }
     }
