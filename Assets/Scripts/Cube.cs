@@ -105,6 +105,5 @@ public class Cube {
 
     public void SetNotOccupied(){
         this.material = transparentMaterial;
-        SetMaterial(transparentMaterial);
     }
 }

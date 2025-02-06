@@ -9,6 +9,7 @@ public class TetrominoGenerating : MonoBehaviour
 {
     public List<GameObject> blocks; // all tetrominos
     public TMP_Text blockName;
+    public TMP_Text blockNameNext;
     
     public Location LocalLocation;
 
@@ -16,7 +17,7 @@ public class TetrominoGenerating : MonoBehaviour
 
     public List<GameObject> blocksBucket = new List<GameObject>(); // difference between random generating blocks cannot be grater than 1 
     
-    private Tetromino nextBlock = null;/// <summary>
+    private Tetromino _nextBlock = null;/// <summary>
     /// Method <c>ChooseBlock</c> returns a random tetromino.
     /// </summary>
 
@@ -49,8 +50,9 @@ public class TetrominoGenerating : MonoBehaviour
 
         Tetromino tetromino = new Tetromino(blocksBucket[0]);
         blocksBucket.RemoveAt(0);
+
         //TODO: zobraziť next block blocksBucket[0]
-        nextBlock = new Tetromino(blocksBucket[0]);
+        _nextBlock = new Tetromino(blocksBucket[0]);
         return tetromino;
 
     }
@@ -62,9 +64,21 @@ public class TetrominoGenerating : MonoBehaviour
     public Tetromino GetTetromino(){
         if (_chosenBlock == null){
             _chosenBlock = RandomTetromino();
+            //_nextBlock = NextBlock();
             LocalLocation = new Location(0, 0, 0);
         }
         blockName.text = _chosenBlock.Name.Substring(0, 5) + ": " + _chosenBlock.Name.Substring(5); // change the shown block name
+        
+        if (blockNameNext == null) {
+        GameObject nextTextObject = GameObject.Find("BlockDisplayNext");
+        if (nextTextObject != null) {
+            blockNameNext = nextTextObject.GetComponent<TMP_Text>();
+        } else {
+            Debug.LogError("BlockDisplayNext not found in the scene!");
+        }
+    }
+        blockNameNext.text = _nextBlock.Name.Substring(0, 5) + ": " + _nextBlock.Name.Substring(5); // change the shown block name
+
 
         return _chosenBlock;
     }

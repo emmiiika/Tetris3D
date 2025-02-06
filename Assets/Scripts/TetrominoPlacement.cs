@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
@@ -137,7 +136,11 @@ public class TetrominoPlacement : MonoBehaviour{
         CheckForWholeLayers(grid, tetromino, localLocation);
     }
     
+    private void disappearCube(Cube[,,,] grid, int x, int y, int z) {
+        grid[x, y, z, 0].SetMaterial(transparentMaterial);
+    }
     private void CheckForWholeLayers(Cube[,,,] grid, Tetromino tetromino, Location localLocation) {
+        
         int gridSizeX = grid.GetLength(0); // length in x dimension
         int gridSizeY = grid.GetLength(1); // length in y dimension
         int gridSizeZ = grid.GetLength(2); // length in z dimension
@@ -212,10 +215,10 @@ public class TetrominoPlacement : MonoBehaviour{
             disappear(grid, 'x', layersX);
         } else if (maxLayers == layersY.Count) {
             Debug.Log("Y layers contain the most numbers: " + layersY.Count);
-            disappear(grid, 'y', layersX);
+            disappear(grid, 'y', layersY);
         } else if (maxLayers == layersZ.Count) {
             Debug.Log("Z layers contain the most numbers: " + layersZ.Count);
-            disappear(grid, 'z', layersX);
+            disappear(grid, 'z', layersZ);
         }
     }
     
@@ -226,8 +229,7 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'x':
                     for (int y = 0; y < grid.GetLength(1); y++) {
                         for (int z = 0; z < grid.GetLength(2); z++) {
-                            //grid[layer, y, z, 0].SetMaterial(transparentMaterial);
-                            grid[layer, y, z, 0].SetNotOccupied();
+                            disappearCube(grid, layer, y, z);
                         }
                     }
                     Debug.Log("Disappearing layer x: " + layer);
@@ -235,8 +237,7 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'y':
                     for (int x = 0; x < grid.GetLength(0); x++) {
                         for (int z = 0; z < grid.GetLength(2); z++) {
-                            //grid[x, layer, z, 0].SetMaterial(transparentMaterial);
-                            grid[x, layer, z, 0].SetNotOccupied();
+                            disappearCube(grid, x, layer, z);
                         }
                     }
                     Debug.Log("Disappearing layer y: " + layer);
@@ -244,8 +245,7 @@ public class TetrominoPlacement : MonoBehaviour{
                 case 'z':
                     for (int x = 0; x < grid.GetLength(0); x++) {
                         for (int y = 0; y < grid.GetLength(1); y++) {
-                            //grid[x, y, layer, 0].SetMaterial(transparentMaterial);
-                            grid[x, y, layer, 0].SetNotOccupied();
+                            disappearCube(grid, x, y, layer);
                         }
                     }
                     Debug.Log("Disappearing layer z: " + layer);
